@@ -1,9 +1,8 @@
 # ============================================================================
 # Mobile-Auto Environment Setup Script (PowerShell)
-# Hướng dẫn cài đặt biến môi trường cho chạy automation tests trên Android
+# Configure environment variables for Android mobile automation testing
 # ============================================================================
 
-# Cấu hình để theo dõi trạng thái setup
 $setupComplete = $true
 $missingSteps = @()
 
@@ -14,37 +13,37 @@ Write-Host "===============================================" -ForegroundColor Cy
 Write-Host ""
 
 # ============================================================================
-# BƯỚC 1: KIỂM TRA VÀ CẬP NHẬT JAVA_HOME
+# STEP 1: CHECK AND SET JAVA_HOME
 # ============================================================================
 
 Write-Host "1. JAVA_HOME Setup:" -ForegroundColor Cyan
 Write-Host "---" -ForegroundColor Gray
 
 if ($env:JAVA_HOME) {
-    Write-Host "[OK] JAVA_HOME đã được cấu hình: $env:JAVA_HOME" -ForegroundColor Green
+    Write-Host "[OK] JAVA_HOME is configured: $env:JAVA_HOME" -ForegroundColor Green
 } else {
-    # Cố gắng tự động phát hiện JDK từ lệnh java
     $detectedJdk = $null
 
     try {
-        $javaPath = (Get-Command java -ErrorAction SilentlyContinue).Source
-        if ($javaPath) {
-            # Trích xuất JAVA_HOME từ đường dẫn java.exe (loại bỏ \bin\java.exe)
-            $detectedJdk = Split-Path (Split-Path $javaPath -Parent) -Parent
+        $javaCmd = Get-Command java -ErrorAction SilentlyContinue
+        if ($javaCmd -and $javaCmd.Source) {
+            # Extract JAVA_HOME from java.exe path: <jdk>\bin\java.exe
+            $detectedJdk = Split-Path (Split-Path $javaCmd.Source -Parent) -Parent
         }
     } catch {}
 
-    # Nếu không tìm thấy từ lệnh java, tìm ở các vị trí thông thường
     if (-not $detectedJdk) {
-        $jdkPaths = @(
+        $jdkPatterns = @(
             "$env:ProgramFiles\Eclipse Foundation\jdk-*",
             "$env:ProgramFiles\Java\jdk-*",
             "$env:ProgramFiles\OpenJDK\jdk-*",
             "${env:ProgramFiles(x86)}\Java\jdk-*"
         )
 
-        foreach ($pattern in $jdkPaths) {
-            $found = Get-Item $pattern -ErrorAction SilentlyContinue | Sort-Object -Descending | Select-Object -First 1
+        foreach ($pattern in $jdkPatterns) {
+            $found = Get-Item $pattern -ErrorAction SilentlyContinue |
+                Sort-Object -Property FullName -Descending |
+                Select-Object -First 1
             if ($found) {
                 $detectedJdk = $found.FullName
                 break
@@ -54,97 +53,85 @@ if ($env:JAVA_HOME) {
 
     if ($detectedJdk) {
         $env:JAVA_HOME = $detectedJdk
-        Write-Host "[OK] JAVA_HOME tự động phát hiện cho phiên hiện tại: $env:JAVA_HOME" -ForegroundColor Yellow
-        Write-Host "   Lưu ý: Đây là tạm thời. Để cấu hình vĩnh viễn:" -ForegroundColor Gray
-        Write-Host "   Chạy với quyền Admin:" -ForegroundColor Gray
+        Write-Host "[OK] JAVA_HOME detected for current session: $env:JAVA_HOME" -ForegroundColor Yellow
+        Write-Host "   To set permanently:" -ForegroundColor Gray
         Write-Host "   [Environment]::SetEnvironmentVariable('JAVA_HOME', '$detectedJdk', 'User')" -ForegroundColor Gray
-        
-        # Cố gắng cấu hình vĩnh viễn
+
         try {
             [Environment]::SetEnvironmentVariable("JAVA_HOME", $detectedJdk, "User")
-            Write-Host "[OK] JAVA_HOME đã cấu hình vĩnh viễn cho người dùng" -ForegroundColor Green
+            Write-Host "[OK] JAVA_HOME saved permanently for current user" -ForegroundColor Green
         } catch {
-            Write-Host "[!] Không thể cấu hình vĩnh viễn (cần quyền Admin)" -ForegroundColor Yellow
+            Write-Host "[WARN] Cannot set permanent JAVA_HOME (permission issue)" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "[ERROR] JAVA_HOME chưa cấu hình và JDK không được tìm thấy" -ForegroundColor Red
+        Write-Host "[ERROR] JAVA_HOME is not configured and JDK was not found" -ForegroundColor Red
         $setupComplete = $false
-        $missingSteps += "Cài đặt Java JDK và thêm vào PATH"
-        Write-Host "   Yêu cầu: Cấu hình JAVA_HOME đến đường dẫn cài đặt JDK của bạn" -ForegroundColor Yellow
-        Write-Host "   Ví dụ: C:\Program Files\Java\jdk-21" -ForegroundColor Gray
+        $missingSteps += "Install Java JDK and add java to PATH"
+        Write-Host "   Expected example: C:\Program Files\Java\jdk-21" -ForegroundColor Gray
     }
 }
 
 Write-Host ""
 
 # ============================================================================
-# BƯỚC 2: KIỂM TRA VÀ CẬP NHẬT ANDROID_HOME
+# STEP 2: CHECK AND SET ANDROID_HOME / ANDROID_SDK_ROOT
 # ============================================================================
 
 Write-Host "2. ANDROID_HOME Setup:" -ForegroundColor Cyan
 Write-Host "---" -ForegroundColor Gray
 
 if ($env:ANDROID_HOME -and $env:ANDROID_SDK_ROOT) {
-    Write-Host "[OK] ANDROID_HOME đã được cấu hình: $env:ANDROID_HOME" -ForegroundColor Green
-    Write-Host "[OK] ANDROID_SDK_ROOT đã được cấu hình: $env:ANDROID_SDK_ROOT" -ForegroundColor Green
+    Write-Host "[OK] ANDROID_HOME is configured: $env:ANDROID_HOME" -ForegroundColor Green
+    Write-Host "[OK] ANDROID_SDK_ROOT is configured: $env:ANDROID_SDK_ROOT" -ForegroundColor Green
 } else {
-    # Cố gắng tự động phát hiện từ các vị trí phổ biến
-    $androidPaths = @(
-        "$env:LOCALAPPDATA\Android\Sdk",           # Người dùng (phổ biến nhất)
-        "$env:ProgramData\Android\Sdk",             # Toàn hệ thống
-        "C:\Android\Sdk",                           # Vị trí tùy chỉnh
-        "$env:SystemDrive\Android\Sdk"              # Gốc ổ đĩa hệ thống
+    $androidCandidates = @(
+        "$env:LOCALAPPDATA\Android\Sdk",
+        "$env:ProgramData\Android\Sdk",
+        "C:\Android\Sdk",
+        "$env:SystemDrive\Android\Sdk"
     )
 
     $detectedAndroid = $null
-    foreach ($path in $androidPaths) {
-        if (Test-Path $path) {
-            $detectedAndroid = $path
+    foreach ($candidate in $androidCandidates) {
+        if (Test-Path $candidate) {
+            $detectedAndroid = $candidate
             break
         }
     }
 
     if ($detectedAndroid) {
-        # Cấu hình vĩnh viễn cho người dùng (không cần admin)
         try {
-            [Environment]::SetEnvironmentVariable('ANDROID_HOME', $detectedAndroid, 'User')
-            [Environment]::SetEnvironmentVariable('ANDROID_SDK_ROOT', $detectedAndroid, 'User')
-            Write-Host "[OK] ANDROID_HOME và ANDROID_SDK_ROOT cấu hình vĩnh viễn: $detectedAndroid" -ForegroundColor Green
+            [Environment]::SetEnvironmentVariable("ANDROID_HOME", $detectedAndroid, "User")
+            [Environment]::SetEnvironmentVariable("ANDROID_SDK_ROOT", $detectedAndroid, "User")
+            Write-Host "[OK] ANDROID_HOME and ANDROID_SDK_ROOT saved permanently: $detectedAndroid" -ForegroundColor Green
         } catch {
-            Write-Host "[!] Không thể cấu hình vĩnh viễn, chỉ cấu hình cho phiên hiện tại" -ForegroundColor Yellow
+            Write-Host "[WARN] Cannot set permanent Android variables, using current session only" -ForegroundColor Yellow
         }
-        
-        # Cấu hình cho phiên hiện tại
+
         $env:ANDROID_HOME = $detectedAndroid
         $env:ANDROID_SDK_ROOT = $detectedAndroid
-        Write-Host "   Những biến này hiện có sẵn toàn hệ thống (khởi động lại terminal để áp dụng)" -ForegroundColor Gray
     } else {
-        Write-Host "[ERROR] ANDROID_HOME/ANDROID_SDK_ROOT chưa cấu hình và SDK không được tìm thấy" -ForegroundColor Red
+        Write-Host "[ERROR] ANDROID_HOME/ANDROID_SDK_ROOT are not configured and SDK was not found" -ForegroundColor Red
         $setupComplete = $false
-        $missingSteps += "Cài đặt ANDROID_HOME và ANDROID_SDK_ROOT"
-        Write-Host "   Yêu cầu: Cấu hình ANDROID_HOME và ANDROID_SDK_ROOT đến đường dẫn Android SDK" -ForegroundColor Yellow
-        Write-Host "   Các vị trí phổ biến:" -ForegroundColor Gray
-        Write-Host "   - $env:LOCALAPPDATA\Android\Sdk (người dùng)" -ForegroundColor Gray
-        Write-Host "   - $env:ProgramData\Android\Sdk (toàn hệ thống)" -ForegroundColor Gray
+        $missingSteps += "Install Android SDK and configure ANDROID_HOME + ANDROID_SDK_ROOT"
     }
 }
 
 Write-Host ""
 
 # ============================================================================
-# BƯỚC 3: CẬP NHẬT PATH CHO PHIÊN HIỆN TẠI
+# STEP 3: UPDATE PATH FOR CURRENT SESSION
 # ============================================================================
 
-Write-Host "3. Path Configuration:" -ForegroundColor Cyan
+Write-Host "3. PATH Configuration:" -ForegroundColor Cyan
 Write-Host "---" -ForegroundColor Gray
 
 if ($env:JAVA_HOME -and $env:ANDROID_HOME) {
     $env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\tools;$env:ANDROID_HOME\tools\bin;$env:Path"
-    Write-Host "[OK] PATH đã cập nhật cho phiên hiện tại" -ForegroundColor Green
-    Write-Host "   JAVA_HOME\bin: $env:JAVA_HOME\bin" -ForegroundColor Gray
-    Write-Host "   ANDROID_HOME\platform-tools: $env:ANDROID_HOME\platform-tools" -ForegroundColor Gray
+    Write-Host "[OK] PATH updated for current terminal session" -ForegroundColor Green
 } else {
-    Write-Host "[ERROR] Không thể cập nhật PATH (JAVA_HOME hoặc ANDROID_HOME chưa được cấu hình)" -ForegroundColor Red
+    Write-Host "[ERROR] Cannot update PATH because JAVA_HOME or ANDROID_HOME is missing" -ForegroundColor Red
+    $setupComplete = $false
 }
 
 Write-Host ""
@@ -154,37 +141,39 @@ Write-Host "===============================================" -ForegroundColor Cy
 Write-Host ""
 
 # ============================================================================
-# BƯỚC 8: PHÁT HIỆN THIẾT BỊ ANDROID
+# STEP 4: DETECT CONNECTED ANDROID DEVICE
 # ============================================================================
 
-Write-Host "[INFO] Phát hiện thiết bị Android kết nối..." -ForegroundColor Gray
+Write-Host "[INFO] Detecting connected Android devices..." -ForegroundColor Gray
+
 $deviceOutput = adb devices
 $deviceList = @()
 foreach ($line in $deviceOutput) {
-    if ($line -match '^\s*(\S+)\s+device\s*$' -and $line -notmatch 'List of devices') {
+    if ($line -match '^\s*(\S+)\s+device\s*$' -and $line -notmatch '^List of devices') {
         $deviceList += $matches[1]
     }
 }
 
 if ($deviceList.Count -eq 0) {
-    Write-Host "[ERROR] Không có thiết bị nào kết nối" -ForegroundColor Red
-    Write-Host "   Yêu cầu: Kết nối thiết bị qua USB và bật Developer Options > USB Debugging" -ForegroundColor Yellow
+    Write-Host "[ERROR] No connected Android device found" -ForegroundColor Red
+    Write-Host "   Connect device via USB and enable USB Debugging" -ForegroundColor Yellow
+    $setupComplete = $false
+    $missingSteps += "Connect at least one Android device or start an emulator"
 } else {
     $udid = $deviceList[0]
-    Write-Host "[OK] Thiết bị được phát hiện: $udid" -ForegroundColor Green
+    Write-Host "[OK] Found device: $udid" -ForegroundColor Green
 
-    # Lấy thông tin thiết bị
     try {
         $deviceName = (adb -s $udid shell "getprop ro.product.model").Trim()
         $manufacturer = (adb -s $udid shell "getprop ro.product.manufacturer").Trim()
         $androidVersion = (adb -s $udid shell "getprop ro.build.version.release").Trim()
 
-        Write-Host "   Nhà sản xuất: $manufacturer" -ForegroundColor Gray
+        Write-Host "   Manufacturer: $manufacturer" -ForegroundColor Gray
         Write-Host "   Model: $deviceName" -ForegroundColor Gray
         Write-Host "   Android: $androidVersion" -ForegroundColor Gray
         Write-Host "   UDID: $udid" -ForegroundColor Gray
     } catch {
-        Write-Host "   [!] Không thể lấy thông tin thiết bị" -ForegroundColor Yellow
+        Write-Host "[WARN] Cannot query detailed device info" -ForegroundColor Yellow
     }
 }
 
@@ -192,9 +181,16 @@ Write-Host ""
 Write-Host "===============================================" -ForegroundColor Cyan
 
 if ($setupComplete) {
-    Write-Host "Setup Complete! ✓" -ForegroundColor Green
+    Write-Host "Setup Complete!" -ForegroundColor Green
 } else {
-    Write-Host "Setup INCOMPLETE! ✗" -ForegroundColor Red
+    Write-Host "Setup INCOMPLETE!" -ForegroundColor Red
+
+    if ($missingSteps.Count -gt 0) {
+        Write-Host "Missing steps:" -ForegroundColor Yellow
+        $missingSteps | Select-Object -Unique | ForEach-Object {
+            Write-Host " - $_" -ForegroundColor Yellow
+        }
+    }
 }
 
 Write-Host "===============================================" -ForegroundColor Cyan
