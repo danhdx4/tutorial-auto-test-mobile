@@ -10,7 +10,7 @@
   - Hybrid App
   - Mobile Web
 
-- Sử dụng chuẩn **WebDriver Protocol**
+- Sử dụng chuẩn **WebDriver Protocol** giao thức chuẩn để điều khiển trình duyệt hoặc thiết bị qua mạng, cho phép test automation gửi lệnh như mở trang, click, nhập text, lấy kết quả
 - Không yêu cầu chỉnh sửa source code ứng dụng
 
 ---
@@ -54,12 +54,11 @@ Test Script (WebdriverIO)
 
 ## Công nghệ sử dụng trong khóa học
 
-- JavaScript (ES6+)
+- TypeScript (ES6+)
 - Node.js
 - WebdriverIO
-- Appium 3.x
-- Android Studio
-- Android Emulator
+- Appium 4.x
+- Android Emulator/ LDPlayer
 - Appium Inspector
 
 ### Mục tiêu
@@ -115,7 +114,7 @@ Link: https://webdriver.io/docs/gettingstarted/
         'appium:deviceName': 'Pixel 4',
         'appium:platformVersion': '12.0',
         'appium:automationName': 'UiAutomator2',
-        'appium:app': path.join(process.cwd(), '../..', 'app/android/ApiDemos-debug.apk')
+        'appium:app': path.join(process.cwd(), 'app/android/ApiDemos-debug.apk')
     }],
 
 ```
@@ -139,3 +138,5 @@ describe("Sample", () => {
 - run app in appium inspector
 
 # Bài 3: Android - Finding Elements
+
+Link: https://webdriver.io/docs/bestpractices/
