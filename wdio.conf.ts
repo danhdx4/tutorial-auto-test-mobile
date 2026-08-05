@@ -59,7 +59,7 @@ export const config: WebdriverIO.Config = {
         'appium:deviceName': 'Pixel 4',
         'appium:platformVersion': '12.0',
         'appium:automationName': 'UiAutomator2',
-        'appium:app': path.join(process.cwd(), './', 'app/android/ApiDemos-debug.apk')
+        'appium:app': path.join(process.cwd(), 'app/android/ApiDemos-debug.apk')
     }],
 
     //
