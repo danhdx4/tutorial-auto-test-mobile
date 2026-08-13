@@ -1,7 +1,14 @@
 describe('Android - Finding Elements', () => {
-    it('Finding element by accessibility id', async () => {
+    it.only('Finding element by accessibility id', async () => {
         // syntax
         // const element = await $('~accessibilityId');
+        const appBtn = await $('~App')
+
+        await expect(appBtn).toBeExisting()
+
+        await appBtn.click()
+
+        await driver.pause(5000)
     })
 
     it('Finding element by class name', async () => {
@@ -10,6 +17,9 @@ describe('Android - Finding Elements', () => {
         // Lưu ý: Việc sử dụng className để tìm kiếm thường không cho ra 1 kết quả duy nhất. 
         // Nếu match nhiều element, thì WebdriverIO sẽ thao tác trên element được tìm thấy đầu tiên trong tập kết quả
 
+        const logo = await $('android.widget.TextView') //trả ra phần tử đầu tiên tìm được
+
+        await expect(logo).toHaveText('API Demos')
     })
 
     it('Finding element by xPath', async () => {
@@ -18,12 +28,17 @@ describe('Android - Finding Elements', () => {
         example:
         - content-desc
         - resource-id
-        - texxt
+        - text
         Lưu ý: XPath rất linh hoạt nhưng dài, khó đọc, dễ brittle, khó maintain
         -> Ưu tiên locator ổn định và đơn giản hơn trước
         */
-        const element = $('//*[@content-desc="App"]')
-        await expect(element).toBeExisting()
+        const appBtn = await $('//*[@content-desc="App"]')
+
+        await expect(appBtn).toBeExisting()
+
+        await appBtn.click()
+
+        await driver.pause(5000)
     })
 
     it('Finding element by Android UiAutomator', async () => {
@@ -33,22 +48,37 @@ describe('Android - Finding Elements', () => {
 
         // Find by Text
         // $('android=new UiSelector().text("value")')
+        const appBtn = await $('android=new UiSelector().text("App")')
+
+        await expect(appBtn).toBeExisting()
+
+        await appBtn.click()
 
         // Find by Text Contains
         // $('android=new UiSelector().textContains("value")')
+        const actionBarBtn = await $('android=new UiSelector().textContains("Action")')
+
+        await expect(actionBarBtn).toBeExisting()
 
         // Find by Text Starts With
         // $('android=new UiSelector().textStartsWith("value")')
 
         // Find by Resource ID
         // $('android=new UiSelector().resourceId("resource-id")')
+        // Note: Do tìm kiếm bằng resourceId ra nhiều kết quả, nên sử dụng "chaining - nối" các điều kiện để kết quả tìm kiếm chính xác hơn
+        // alertBtn dùng 2 điều kiện là resourceId và text
+        const alertBtn = await $('android=new UiSelector().resourceId("android:id/text1").text("Alert Dialogs")')
+        await alertBtn.click()
 
         // Find by Description
         // $('android=new UiSelector().description("value")')
+        const listDialogBtn = await $('android=new UiSelector().description("List dialog")')
+        await listDialogBtn.click()
 
+        await driver.pause(5000)
     })
 
-    it.only('Finding multiphe elements', async () => {
+    it('Finding multiphe elements', async () => {
         // syntax
         // const elements = await $$('selector');
 
