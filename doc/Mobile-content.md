@@ -210,3 +210,172 @@ describe("Android - Finding Elements", () => {
 ## Bài tập về nhà
 
 Định vị mỗi phần tử trên trang Home bằng ít nhất 2 cách khác nhau
+
+# Bài 4: Android Native Features: UI Interaction
+
+## Mục tiêu
+
+Học viên có thể xử lý các thành phần native phổ biến và thao tác với màn hình Android.
+
+## Package & Activiity - Android
+
+Package & Activity là gì?
+
+- Package = định danh của ứng dụng. "Đây là app nào?"
+- Activity = một màn hình/chức năng UI trong ứng dụng. "Trong app đó, mở màn hình nào"
+- Cách xác định package và activity thông qua Appium
+
+```ts
+capabilities: ([
+  {
+    platformName: "Android",
+    "appium:deviceName": "Pixel 4",
+    "appium:platformVersion": "12.0",
+    "appium:automationName": "UiAutomator2",
+    "appium:appPackage": "io.appium.android.apis",
+    "appium:appActivity": ".ApiDemos",
+  },
+]
+
+it("Access an Activity directly", async () => {
+    // access activity
+    await driver.startActivity(
+      "io.appium.android.apis",
+      ".app.AlertDialogSamples",
+    );
+
+    // pause 3s
+    await driver.pause(5000);
+
+    // assert
+    const pageTitle = await $(
+      'android=new UiSelector().text("App/Alert Dialogs")',
+    );
+    expect(pageTitle).toBeExisting();
+}));
+```
+
+### Working with Dialog & Alert Box
+
+```ts
+it("Working with Dialog Boxes", async () => {
+  // open the target page
+  await driver.startActivity(
+    "io.appium.android.apis",
+    ".app.AlertDialogSamples",
+  );
+
+  // click on first dialog
+
+  // accept Alert
+
+  // dismiss alert
+
+  // click on the OK button
+
+  // click on the Cancel button
+
+  // assertion - alert box is no longer visiable
+});
+```
+
+## Vertical Scrolling
+
+Link: https://developer.android.com/reference/androidx/test/uiautomator/UiScrollable
+
+```ts
+it.only("Vertical Scrolling1", async () => {
+  // open Activity app: App -> Activity
+  await $("~App").click();
+  await $("~Activity").click();
+
+  // // scroll to end
+  // // UiSelector tìm container → UiScrollable thao tác scroll → scrollToEnd() scroll đến cuối.
+  // // 1 = tối đa bao nhiêu lần swipe, 5 = mỗi swipe được thực hiện với bao nhiêu step
+  // await $('android=new UiScrollable(new UiSelector().scrollable(true)).scrollToEnd(1,5)')
+
+  // // click on 'Secure Surfaces btn"
+  // await $('~Secure Surfaces').click()
+
+  // scrollTextIntoView
+  await $(
+    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")',
+  ).click();
+
+  // assertion Secure Dialog to be Exist
+  await expect($("~Secure Dialog")).toBeExisting();
+});
+```
+
+## Horizontal Scrolling
+
+```ts
+it.only("Horizontal Scrolling1", async () => {
+  // open the target page
+  // Views -> Gallery -> 1. Photos
+  await driver.startActivity("io.appium.android.apis", ".view.Gallery1");
+
+  // Horizontal scrolling
+  await $(
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+  );
+
+  await $(
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()",
+  );
+
+  await driver.pause(3000);
+});
+```
+
+## Bài tập về nhà
+
+- Access the Date Widget
+- - View → Date Widgets → Dialog
+- Get the current date
+- Click “change the date”
+- Scroll horizontally to the right
+- Select the 10th date of the month
+- Click the OK button
+- Assert that the date has been updated
+
+# Bài 5: Android Native Features: App & Device APIs
+
+## Mobile Actions
+
+scrollIntoView()
+swipe()
+tap()
+longPress()
+dragAndDrop()
+
+## App APIs
+
+launchApp()
+background()
+relaunchActiveApp()
+deepLink()
+
+## Device APIs
+
+getClipboard()
+setClipboard()
+isLocked()
+lock()
+unlock()
+
+# Buổi 6, 7, 8: Page Object Model/ Practice with Android App
+
+## Handle Permission
+
+## Skip Tutorial Test
+
+## Add Note Test
+
+## Delete Note
+
+# Buổi 9, 10: Webview
+
+# Buổi 11: Reporting
+
+# Buổi 12: Bài tập lớn
