@@ -27,7 +27,7 @@ export const config: WebdriverIO.Config = {
   //
   specs: [
     // './test/specs/**/*.ts',
-    "./test/specs/QuynhNT/*.spec.ts",
+    "./test/specs/android-native.spec.ts"
   ],
   // Patterns to exclude.
   exclude: [
@@ -56,12 +56,20 @@ export const config: WebdriverIO.Config = {
   // https://saucelabs.com/platform/platform-configurator
   //
   capabilities: [
+    // {
+    //   platformName: "Android",
+    //   "appium:deviceName": "Pixel 4",
+    //   "appium:platformVersion": "12.0",
+    //   "appium:automationName": "UiAutomator2",
+    //   "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
+    // },
     {
       platformName: "Android",
       "appium:deviceName": "Pixel 4",
       "appium:platformVersion": "12.0",
       "appium:automationName": "UiAutomator2",
-      "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
+      "appium:appPackage": "io.appium.android.apis",
+      "appium:appActivity": ".ApiDemos",
     },
   ],
 
