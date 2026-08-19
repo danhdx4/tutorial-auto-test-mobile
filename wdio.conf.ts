@@ -27,7 +27,7 @@ export const config: WebdriverIO.Config = {
   //
   specs: [
     // './test/specs/**/*.ts',
-    "./test/specs/android-native.spec.ts"
+    "./test/specs/ThuyNT/packageActivity.spec.ts"
   ],
   // Patterns to exclude.
   exclude: [
