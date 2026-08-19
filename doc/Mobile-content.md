@@ -4,6 +4,7 @@
 
 - Framework mã nguồn mở dùng để **Automation Testing Mobile Apps**
 - Hỗ trợ:
+
   - Android
   - iOS
   - Native App
@@ -19,6 +20,7 @@
 
 - Framework Automation Testing dành cho JavaScript/TypeScript
 - Tích hợp sẵn với:
+
   - Appium
   - Selenium
   - Browser Automation
@@ -262,7 +264,7 @@ it("Working with Dialog Boxes", async () => {
   // open the target page
   await driver.startActivity(
     "io.appium.android.apis",
-    ".app.AlertDialogSamples",
+    ".app.AlertDialogSamples"
   );
 
   // click on first dialog
@@ -299,7 +301,7 @@ it.only("Vertical Scrolling1", async () => {
 
   // scrollTextIntoView
   await $(
-    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")',
+    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")'
   ).click();
 
   // assertion Secure Dialog to be Exist
@@ -317,11 +319,11 @@ it.only("Horizontal Scrolling1", async () => {
 
   // Horizontal scrolling
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
   );
 
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()"
   );
 
   await driver.pause(3000);
@@ -341,28 +343,89 @@ it.only("Horizontal Scrolling1", async () => {
 
 # Bài 5: Android Native Features: App & Device APIs
 
-## Mobile Actions
+Link: https://webdriver.io/docs/api/mobile/
 
-scrollIntoView()
-swipe()
-tap()
-longPress()
-dragAndDrop()
-
-## App APIs
+## App APIs - điều khiển vòng đời và cách mở app
 
 launchApp()
 background()
 relaunchActiveApp()
 deepLink()
 
-## Device APIs
+## Device APIs - tương tác với trạng thái/dữ liệu của device
 
-getClipboard()
-setClipboard()
 isLocked()
 lock()
 unlock()
+
+## Thực hành
+
+```
+1. Launch app
+       ↓
+3. Đưa app xuống background 5 giây
+       ↓
+4. Relaunch app
+       ↓
+5. Lock device
+       ↓
+6. Verify device đang locked
+       ↓
+7. Unlock device
+       ↓
+8. Verify app vẫn hoạt động
+```
+
+````ts
+    it.only('App & Device APIs', async () => {
+        // 1. Open Views/Date Widgets/1. Dialog Page
+        await driver.startActivity("io.appium.android.apis", ".view.DateWidgets1")
+
+        // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
+        // Tham số 5 nghĩa là app sẽ ở trạng thái chạy ngầm 5s, sau đó khôi phục lại
+        // await driver.background(5);
+
+        await driver.background(-1)
+        await driver.pause(5000)
+        await driver.activateApp("io.appium.android.apis")
+
+        // 5. Lock device
+        await driver.lock();
+        await driver.pause(5000)
+
+        // 6. Verify device đang locked
+        let isDeviceLocked = await driver.isLocked();
+        expect(isDeviceLocked).toBe(true);
+
+        // 7. Unlock device
+        await driver.unlock();
+        await driver.pause(5000)
+
+        // Đảm bảo device đã unlock xong trước khi check element
+        isDeviceLocked = await driver.isLocked();
+        expect(isDeviceLocked).toBe(false);
+
+        // 8. Verify app vẫn hoạt động
+        // Locator for date field
+        const dateField = await $('android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")')
+
+        // assert default date time
+        const expectedDate = getDateTime()
+        await expect(await dateField.getText()).toContain(expectedDate)
+
+        // Click on 'change the date' button
+        await $('~change the date').click()
+
+        // Scroll horizontal
+        await $("android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()");
+        await $('android=new UiSelector().text("10")').click();
+        await $('android=new UiSelector().resourceId("android:id/button1")').click()
+
+        // assert date updated
+        await expect(await dateField.getText()).not.toContain(expectedDate)
+        await expect(await dateField.getText()).toContain('10')
+    })
+```
 
 # Buổi 6, 7, 8: Page Object Model/ Practice with Android App
 
@@ -379,3 +442,4 @@ unlock()
 # Buổi 11: Reporting
 
 # Buổi 12: Bài tập lớn
+````
