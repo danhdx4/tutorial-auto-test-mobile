@@ -52,7 +52,7 @@ describe('Android - Finding Elements', () => {
         await driver.pause(5000)
     })
 
-    it('Finding element by Android UiAutomator', async () => {
+    it.only('Finding element by Android UiAutomator', async () => {
         // Find by Text
         const graphicBtn = await $('android=new UiSelector().text("Graphics")')
 
@@ -69,7 +69,7 @@ describe('Android - Finding Elements', () => {
         await driver.pause(5000)
     })
 
-    it.only('Finding multiphe elements', async () => {
+    it('Finding multiphe elements', async () => {
         // syntax
         // const elements = await $$('selector');
 
