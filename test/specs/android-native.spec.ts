@@ -1,3 +1,5 @@
+import { getDateTime } from "../utils/helper.spec.ts"
+
 describe('Adnroid Native Feature Test', () => {
     it('Access an Activity directly', async () => {
         // access activity
@@ -70,5 +72,21 @@ describe('Adnroid Native Feature Test', () => {
         );
 
         await driver.pause(3000);
+    })
+
+    it.only('App & Device APIs', async () => {
+        // 1. Open Views/Date Widgets/1. Dialog Page
+
+        // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
+
+        // 5. Lock device
+
+        // 6. Verify device đang locked
+
+        // 7. Unlock device
+
+        // Đảm bảo device đã unlock xong trước khi check element
+
+        // 8. Verify app vẫn hoạt động
     })
 })
