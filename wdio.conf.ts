@@ -26,12 +26,7 @@ export const config: WebdriverIO.Config = {
   // of the config file unless it's absolute.
   //
   specs: [
-    // './test/specs/**/*.ts',
-<<<<<<< HEAD
-    "./test/specs/ThuyNT/packageActivity.spec.ts"
-=======
-    "./test/specs/AnhNTV/*.spec.ts",
->>>>>>> b2eef35 (no message)
+    './test/specs/**/*.ts'
   ],
   // Patterns to exclude.
   exclude: [
