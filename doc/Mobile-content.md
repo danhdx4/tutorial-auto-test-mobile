@@ -376,56 +376,72 @@ unlock()
 8. Verify app vẫn hoạt động
 ```
 
-````ts
-    it.only('App & Device APIs', async () => {
-        // 1. Open Views/Date Widgets/1. Dialog Page
-        await driver.startActivity("io.appium.android.apis", ".view.DateWidgets1")
+```ts
+it.only("App & Device APIs", async () => {
+  // 1. Open Views/Date Widgets/1. Dialog Page
+  await driver.startActivity("io.appium.android.apis", ".view.DateWidgets1");
 
-        // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
-        // Tham số 5 nghĩa là app sẽ ở trạng thái chạy ngầm 5s, sau đó khôi phục lại
-        // await driver.background(5);
+  // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
+  // Tham số 5 nghĩa là app sẽ ở trạng thái chạy ngầm 5s, sau đó khôi phục lại
+  // await driver.background(5);
 
-        await driver.background(-1)
-        await driver.pause(5000)
-        await driver.activateApp("io.appium.android.apis")
+  await driver.background(-1);
+  await driver.pause(5000);
+  await driver.activateApp("io.appium.android.apis");
 
-        // 5. Lock device
-        await driver.lock();
-        await driver.pause(5000)
+  // 5. Lock device
+  await driver.lock();
+  await driver.pause(5000);
 
-        // 6. Verify device đang locked
-        let isDeviceLocked = await driver.isLocked();
-        expect(isDeviceLocked).toBe(true);
+  // 6. Verify device đang locked
+  let isDeviceLocked = await driver.isLocked();
+  expect(isDeviceLocked).toBe(true);
 
-        // 7. Unlock device
-        await driver.unlock();
-        await driver.pause(5000)
+  // 7. Unlock device
+  await driver.unlock();
+  await driver.pause(5000);
 
-        // Đảm bảo device đã unlock xong trước khi check element
-        isDeviceLocked = await driver.isLocked();
-        expect(isDeviceLocked).toBe(false);
+  // Đảm bảo device đã unlock xong trước khi check element
+  isDeviceLocked = await driver.isLocked();
+  expect(isDeviceLocked).toBe(false);
 
-        // 8. Verify app vẫn hoạt động
-        // Locator for date field
-        const dateField = await $('android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")')
+  // 8. Verify app vẫn hoạt động
+  // Locator for date field
+  const dateField = await $(
+    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
+  );
 
-        // assert default date time
-        const expectedDate = getDateTime()
-        await expect(await dateField.getText()).toContain(expectedDate)
+  // assert default date time
+  const expectedDate = getDateTime();
+  await expect(await dateField.getText()).toContain(expectedDate);
 
-        // Click on 'change the date' button
-        await $('~change the date').click()
+  // Click on 'change the date' button
+  await $("~change the date").click();
 
-        // Scroll horizontal
-        await $("android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()");
-        await $('android=new UiSelector().text("10")').click();
-        await $('android=new UiSelector().resourceId("android:id/button1")').click()
+  // Scroll horizontal
+  await $(
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
+  );
+  await $('android=new UiSelector().text("10")').click();
+  await $('android=new UiSelector().resourceId("android:id/button1")').click();
 
-        // assert date updated
-        await expect(await dateField.getText()).not.toContain(expectedDate)
-        await expect(await dateField.getText()).toContain('10')
-    })
+  // assert date updated
+  await expect(await dateField.getText()).not.toContain(expectedDate);
+  await expect(await dateField.getText()).toContain("10");
+});
 ```
+
+## Bài tập về nhà
+
+1. Setup capability trong file config để chạy App /app/android/ColorNote+Notepad.apk
+2. Setup trong Appium Inspector để debug được app trong step 1
+3. Chạy thử script trong test/specs/example.spec.ts để test setup thành công.
+   Lưu ý: Do file config chỉ có 1 file, nên mọi người clone file vào thư mục của mình để config nha
+
+   Khi chạy test, thì dùng câu lệnh sau ạ:
+   npx wdio run pathConfigFile --spec pathConfigSpec
+
+   Ví dụ: npx wdio run test/specs/LanhNT/wdio.conf.ts --spec test/specs/LanhNT/date-time.spec.ts
 
 # Buổi 6, 7, 8: Page Object Model/ Practice with Android App
 
@@ -442,4 +458,7 @@ unlock()
 # Buổi 11: Reporting
 
 # Buổi 12: Bài tập lớn
-````
+
+```
+
+```
