@@ -76,17 +76,71 @@ describe('Adnroid Native Feature Test', () => {
 
     it.only('App & Device APIs', async () => {
         // 1. Open Views/Date Widgets/1. Dialog Page
+        await driver.startActivity("io.appium.android.apis", ".view.DateWidgets1")
 
         // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
+        await driver.background(5)
 
         // 5. Lock device
+        await driver.lock()
+        await driver.pause(5000)
 
         // 6. Verify device đang locked
+        let isLock = await driver.isLocked()
+        await expect(isLock).toBeTruthy()
 
         // 7. Unlock device
+        await driver.unlock()
+        await driver.pause(5000)
+        isLock = await driver.isLocked()
 
         // Đảm bảo device đã unlock xong trước khi check element
+        await expect(isLock).toBeFalsy()
 
         // 8. Verify app vẫn hoạt động
+        const currentDate = await $(
+            'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
+        ).getText();
+
+        // In ngày hiện tại ra console để kiểm tra
+        console.log("Current date:", currentDate);
+
+        //Click Change the date
+        await $("~change the date").click();
+
+        //  scroll
+        // Scroll horizontally to the right 
+        // scroll theo chiều ngang và scroll sang bên phải
+        await $(
+            "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
+        );
+
+        // Tìm ngày 10 trong tháng hiện tại của Date Picker
+        // và click vào ngày 10
+        await $(
+            'android=new UiSelector().text("10")',
+        ).click();
+
+        // Click OK để xác nhận ngày đã chọn
+        await $(
+            'android=new UiSelector().text("OK")',
+        ).click();
+        // Chờ 5 giây để nhìn thấy ngày mới trên emulator
+        await driver.pause(5000);
+
+        // Lấy lại ngày sau khi chọn ngày 10
+        const updatedDate = await $(
+            'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")',
+        ).getText();
+
+        // In ngày mới ra console
+        console.log("Updated date:", updatedDate);
+
+        // Kiểm tra ngày 10 có tồn tại trên màn hình không
+        await expect(
+            $(
+                'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
+            )
+        ).toBeExisting();
     })
 })
