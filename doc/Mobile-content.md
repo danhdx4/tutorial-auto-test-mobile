@@ -4,7 +4,6 @@
 
 - Framework mã nguồn mở dùng để **Automation Testing Mobile Apps**
 - Hỗ trợ:
-
   - Android
   - iOS
   - Native App
@@ -20,7 +19,6 @@
 
 - Framework Automation Testing dành cho JavaScript/TypeScript
 - Tích hợp sẵn với:
-
   - Appium
   - Selenium
   - Browser Automation
@@ -264,7 +262,7 @@ it("Working with Dialog Boxes", async () => {
   // open the target page
   await driver.startActivity(
     "io.appium.android.apis",
-    ".app.AlertDialogSamples"
+    ".app.AlertDialogSamples",
   );
 
   // click on first dialog
@@ -301,7 +299,7 @@ it.only("Vertical Scrolling1", async () => {
 
   // scrollTextIntoView
   await $(
-    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")'
+    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")',
   ).click();
 
   // assertion Secure Dialog to be Exist
@@ -319,11 +317,11 @@ it.only("Horizontal Scrolling1", async () => {
 
   // Horizontal scrolling
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
   );
 
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()"
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()",
   );
 
   await driver.pause(3000);
@@ -408,7 +406,7 @@ it.only("App & Device APIs", async () => {
   // 8. Verify app vẫn hoạt động
   // Locator for date field
   const dateField = await $(
-    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
+    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")',
   );
 
   // assert default date time
@@ -420,7 +418,7 @@ it.only("App & Device APIs", async () => {
 
   // Scroll horizontal
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
   );
   await $('android=new UiSelector().text("10")').click();
   await $('android=new UiSelector().resourceId("android:id/button1")').click();
@@ -447,9 +445,80 @@ it.only("App & Device APIs", async () => {
 
 ## Handle Permission
 
+- Ý nghĩa: là một Appium capability dùng để yêu cầu Appium tự động cấp các quyền runtime cho ứng dụng Android khi app được cài đặt/khởi chạy, thay vì để test phải xử lý popup xin quyền thủ công.
+
+```ts
+    {
+      platformName: "Android",
+      "appium:deviceName": "Pixel 4",
+      "appium:platformVersion": "12.0",
+      "appium:automationName": "UiAutomator2",
+      "appium:app": path.join(process.cwd(), "app/android/ColorNote+Notepad.apk"),
+      "appium:autoGrantPermissions": true
+    },
+```
+
 ## Skip Tutorial Test
 
 ## Add Note Test
+
+```ts
+describe("Add Notes", () => {
+  it("Skip tutorial", async () => {
+    await $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")',
+    ).click();
+
+    const addNoteText = await $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+    );
+    await expect(addNoteText).toBeDisplayed();
+  });
+
+  it("Should be add a new note successfully", async () => {
+    // add note, save changes, verify note
+    const emptyText = await $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+    );
+    await emptyText.click();
+    await $('android=new UiSelector().text("Text")').click();
+    await expect(
+      $(
+        'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/datetime_relative")',
+      ),
+    ).toBeDisplayed();
+
+    // add note title
+    await $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")',
+    ).addValue("Favorite Anime");
+
+    // add note body
+    await $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")',
+    ).addValue("OnePiece\nNaruto\nGhibli");
+
+    // save the changes
+    await driver.back();
+    await driver.back();
+
+    // assertion
+    await expect(emptyText).not.toBeExisting();
+    const firstNoteTitle = $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/title")',
+    );
+    await expect(firstNoteTitle).toHaveText("Favorite Anime");
+  });
+});
+```
+
+## Bài tập về nhà
+
+Sửa lại Note vừa tạo
+
+- Sửa title
+- Sửa nội dung body
+- Verify thông tin đã sửa
 
 ## Delete Note
 
