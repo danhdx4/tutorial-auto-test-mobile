@@ -431,7 +431,7 @@ it.only("App & Device APIs", async () => {
 
 ## Bài tập về nhà
 
-1. Setup capability trong file config để chạy App /app/android/ColorNote+Notepad.apk
+1. Setup capability trong file config để chạy App /app/android/ColorNote+pad.apk
 2. Setup trong Appium Inspector để debug được app trong step 1
 3. Chạy thử script trong test/specs/example.spec.ts để test setup thành công.
    Lưu ý: Do file config chỉ có 1 file, nên mọi người clone file vào thư mục của mình để config nha
