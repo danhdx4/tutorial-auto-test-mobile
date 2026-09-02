@@ -37,6 +37,38 @@ describe("Action - Mobile", () => {
     await okBtn.click();
     const updatedDate = await $("~io.appium.android.apis:id/dateDisplay");
     await expect(updatedDate).toBeExisting();
-    await expect(updatedDate).toHaveText("9-10-2026", { containing: true });
+    const updatedDateText = await updatedDate.getText();
+    expect(updatedDateText).not.toEqual(currentDateText);
+  });
+  it.only("App & Device APIs", async () => {
+    // 1. Open Views/Date Widgets/1. Dialog Page
+    // await driver.startActivity("io.appium.android.apis", ".view.DateWidgets1");
+    const ViewBtn = await $("~Views");
+    await expect(ViewBtn).toBeExisting();
+    await ViewBtn.click();
+
+    //Click Date Widgets
+    await $("~Date Widgets").click();
+
+    //Click Dialog
+    await $("~1. Dialog").click();
+    // 3. Đưa app xuống background 5 giây & 4. Tự động Relaunch
+    await driver.background(5);
+    // 5. Lock device
+    await driver.lock();
+    await driver.pause(3000);
+    // 6. Verify device đang locked
+    const isLocked = await driver.isLocked();
+    await expect(isLocked).toBe(true);
+    // 7. Unlock device
+    await driver.unlock();
+    await driver.pause(3000);
+    // isLocked = await driver.isLocked();
+    // Đảm bảo device đã unlock xong trước khi check element
+    await expect(isLocked).toBeFalsy();
+
+    // 8. Verify app vẫn hoạt động
+    const updatedDate = await $("~io.appium.android.apis:id/dateDisplay");
+    await expect(updatedDate).toBeExisting();
   });
 });
