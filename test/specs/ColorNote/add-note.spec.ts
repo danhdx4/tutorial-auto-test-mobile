@@ -1,3 +1,12 @@
+const data = {
+    title: "Favorite Anime",
+    body: "OnePice\nNaruto\nGhibli"
+}
+const editData = {
+    title: "Edit - Favorite Anime",
+    body: "OnePice\nNaruto\nGhibli\nDoraemon"
+}
+
 describe('Add Notes', () => {
     it('Skip tutorial', async () => {
         await $(
@@ -20,11 +29,11 @@ describe('Add Notes', () => {
 
         // add note title
         const titleInputField = $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")')
-        await titleInputField.addValue('Favorite Anime')
+        await titleInputField.addValue(data.title)
 
         // add note body
         const bodyInputField = $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")')
-        await bodyInputField.addValue('OnePice\nNaruto\nGhibli')
+        await bodyInputField.addValue(data.body)
 
         // save the changes
         await driver.back() // saved
@@ -32,7 +41,33 @@ describe('Add Notes', () => {
 
         // assertion
         await expect(addNoteText).not.toBeDisplayed()
-        const targetNote = $('android=new UiSelector().text("Favorite Anime")')
+        const targetNote = $(`android=new UiSelector().text("${data.title}")`)
+        await expect(targetNote).toBeDisplayed()
+    })
+
+    it('Should be edit the note successfully', async () => {
+        //In the Home page, click on target note to edit
+        let targetNote = $(`android=new UiSelector().text("${data.title}")`)
+        await targetNote.click()
+
+        // Assert: verify the edit note page displayed
+        const editBtn = $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")')
+        await expect(editBtn).toBeDisplayed()
+
+        // Edit note
+        await editBtn.click()
+        const titleInputField = $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")')
+        await titleInputField.setValue(editData.title)
+
+        const bodyInputField = $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")')
+        await bodyInputField.setValue(editData.body)
+
+        // save the changes
+        await driver.back() // saved
+        await driver.back() // back to home
+
+        // assertion note to be changed
+        targetNote = $(`android=new UiSelector().text("${editData.title}")`)
         await expect(targetNote).toBeDisplayed()
     })
 })
