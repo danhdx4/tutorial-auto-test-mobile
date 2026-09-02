@@ -520,6 +520,200 @@ Sửa lại Note vừa tạo
 - Sửa nội dung body
 - Verify thông tin đã sửa
 
+## Page Object Modle
+
+```ts
+//------------------- Tutorial Page -------------------
+import Page from "./page.js";
+
+export default class TutorialPage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get pageTitle() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/textTitle")',
+    );
+  }
+  public get skipBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")',
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.pageTitle).toBeDisplayed();
+  }
+
+  public async skipTutorial() {
+    await this.skipBtn.click();
+  }
+}
+
+//------------------- Home Page -------------------
+import Page from "./page.js";
+export type Type = "Text" | "Checklist";
+
+export default class HomePage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get logo() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")',
+    );
+  }
+  public get addNoteText() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+    );
+  }
+  public get addNoteBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/main_btn1")',
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.logo).toBeDisplayed();
+  }
+
+  public async chooseTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await targetNote.click();
+  }
+
+  public async addNewNote(type: Type) {
+    await this.addNoteBtn.click();
+    const typeBtn = $(`android=new UiSelector().text("${type}")`);
+    await typeBtn.click();
+  }
+
+  public async verifyTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await expect(targetNote).toBeDisplayed();
+  }
+}
+
+//------------------- Note Page -------------------
+import Page from "./page.js";
+export type NoteData = {
+  title: string;
+  body: string;
+};
+
+export default class NotePage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get menuBtn() {
+    return $("~More");
+  }
+  public get editBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")',
+    );
+  }
+
+  public get titleInputField() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")',
+    );
+  }
+
+  public get bodyInputField() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")',
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.menuBtn).toBeDisplayed();
+  }
+
+  public async chooseTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await targetNote.click();
+  }
+
+  public async fillNote(data: NoteData) {
+    await this.titleInputField.setValue(data.title);
+    await this.bodyInputField.setValue(data.body);
+  }
+}
+
+//------------------- Spec -------------------
+import HomePage from "../../pageobjects/home.page.ts";
+import NotePage, { NoteData } from "../../pageobjects/note.page.ts";
+import TutorialPage from "../../pageobjects/tutorial.page.ts";
+
+const data: NoteData = {
+  title: "Favorite Anime",
+  body: "OnePice\nNaruto\nGhibli",
+};
+const editData: NoteData = {
+  title: "Edit - Favorite Anime",
+  body: "OnePice\nNaruto\nGhibli\nDoraemon",
+};
+
+describe("Add Notes", () => {
+  it("Skip tutorial", async () => {
+    const tutorialPage = new TutorialPage();
+    await tutorialPage.skipTutorial();
+  });
+
+  it("Should be add a new note successfully", async () => {
+    // add note, save changes, verify note
+    //Navigate to add note screen
+    const homePage = new HomePage();
+    const notePage = new NotePage();
+    await homePage.waitForLoad();
+    await homePage.addNewNote("Text");
+    await notePage.waitForLoad();
+    await notePage.fillNote(data);
+
+    // save the changes
+    await driver.back(); // saved
+    await driver.back(); // back to home
+
+    // assertion
+    await homePage.waitForLoad();
+    await homePage.verifyTargetNote(data.title);
+  });
+
+  it("Should be edit the note successfully", async () => {
+    //In the Home page, click on target note to edit
+    const homePage = new HomePage();
+    const notePage = new NotePage();
+    await homePage.chooseTargetNote(data.title);
+
+    // Assert: verify the edit note page displayed
+    await notePage.waitForLoad();
+
+    // Edit note
+    await notePage.editBtn.click();
+    await notePage.fillNote(editData);
+
+    // save the changes
+    await driver.back(); // saved
+    await driver.back(); // back to home
+
+    // assertion note to be changed
+    await homePage.waitForLoad();
+    await homePage.verifyTargetNote(editData.title);
+  });
+});
+```
+
 ## Delete Note
 
 # Buổi 9, 10: Webview
