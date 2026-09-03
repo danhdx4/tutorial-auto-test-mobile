@@ -1,6 +1,11 @@
 import Page from './page.js';
 
-export default class NotePage extends Page {
+export type NoteData = {
+    title: string,
+    body: string
+}
+
+class NotePage extends Page {
     /**
      * define selectors using getter methods
      */
@@ -15,6 +20,9 @@ export default class NotePage extends Page {
     public get noteBody() {
         return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")')
     }
+    public get editBtn() {
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")')
+    }
 
     /**
      * define functions
@@ -27,8 +35,10 @@ export default class NotePage extends Page {
         //todo
     }
 
-    public async fillNote(title: string, body: string) {
-        await this.noteTitle.setValue(title)
-        await this.noteBody.setValue(body)
+    public async fillNote(data: NoteData) {
+        await this.noteTitle.setValue(data.title)
+        await this.noteBody.setValue(data.body)
     }
 }
+
+export default new NotePage()

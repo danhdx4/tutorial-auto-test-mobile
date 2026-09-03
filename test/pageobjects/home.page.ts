@@ -2,7 +2,7 @@ import Page from './page.js';
 
 export type TypeNote = 'Text' | 'Checklist'
 
-export default class HomePage extends Page {
+class HomePage extends Page {
     /**
      * define selectors using getter methods
      */
@@ -39,3 +39,5 @@ export default class HomePage extends Page {
         return $(`android=new UiSelector().text("${title}")`);
     }
 }
+
+export default new HomePage()
