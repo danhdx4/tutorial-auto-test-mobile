@@ -4,6 +4,7 @@
 
 - Framework mã nguồn mở dùng để **Automation Testing Mobile Apps**
 - Hỗ trợ:
+
   - Android
   - iOS
   - Native App
@@ -19,6 +20,7 @@
 
 - Framework Automation Testing dành cho JavaScript/TypeScript
 - Tích hợp sẵn với:
+
   - Appium
   - Selenium
   - Browser Automation
@@ -262,7 +264,7 @@ it("Working with Dialog Boxes", async () => {
   // open the target page
   await driver.startActivity(
     "io.appium.android.apis",
-    ".app.AlertDialogSamples",
+    ".app.AlertDialogSamples"
   );
 
   // click on first dialog
@@ -299,7 +301,7 @@ it.only("Vertical Scrolling1", async () => {
 
   // scrollTextIntoView
   await $(
-    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")',
+    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")'
   ).click();
 
   // assertion Secure Dialog to be Exist
@@ -317,11 +319,11 @@ it.only("Horizontal Scrolling1", async () => {
 
   // Horizontal scrolling
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
   );
 
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()"
   );
 
   await driver.pause(3000);
@@ -406,7 +408,7 @@ it.only("App & Device APIs", async () => {
   // 8. Verify app vẫn hoạt động
   // Locator for date field
   const dateField = await $(
-    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")',
+    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
   );
 
   // assert default date time
@@ -418,7 +420,7 @@ it.only("App & Device APIs", async () => {
 
   // Scroll horizontal
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
   );
   await $('android=new UiSelector().text("10")').click();
   await $('android=new UiSelector().resourceId("android:id/button1")').click();
@@ -466,11 +468,11 @@ it.only("App & Device APIs", async () => {
 describe("Add Notes", () => {
   it("Skip tutorial", async () => {
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")'
     ).click();
 
     const addNoteText = await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
     );
     await expect(addNoteText).toBeDisplayed();
   });
@@ -478,24 +480,24 @@ describe("Add Notes", () => {
   it("Should be add a new note successfully", async () => {
     // add note, save changes, verify note
     const emptyText = await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
     );
     await emptyText.click();
     await $('android=new UiSelector().text("Text")').click();
     await expect(
       $(
-        'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/datetime_relative")',
-      ),
+        'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/datetime_relative")'
+      )
     ).toBeDisplayed();
 
     // add note title
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")'
     ).addValue("Favorite Anime");
 
     // add note body
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")'
     ).addValue("OnePiece\nNaruto\nGhibli");
 
     // save the changes
@@ -505,7 +507,7 @@ describe("Add Notes", () => {
     // assertion
     await expect(emptyText).not.toBeExisting();
     const firstNoteTitle = $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/title")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/title")'
     );
     await expect(firstNoteTitle).toHaveText("Favorite Anime");
   });
@@ -532,12 +534,12 @@ export default class TutorialPage extends Page {
    */
   public get pageTitle() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/textTitle")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/textTitle")'
     );
   }
   public get skipBtn() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")'
     );
   }
 
@@ -563,17 +565,17 @@ export default class HomePage extends Page {
    */
   public get logo() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")'
     );
   }
   public get addNoteText() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
     );
   }
   public get addNoteBtn() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/main_btn1")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/main_btn1")'
     );
   }
 
@@ -617,19 +619,19 @@ export default class NotePage extends Page {
   }
   public get editBtn() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")'
     );
   }
 
   public get titleInputField() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")'
     );
   }
 
   public get bodyInputField() {
     return $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")'
     );
   }
 
@@ -714,7 +716,12 @@ describe("Add Notes", () => {
 });
 ```
 
-## Delete Note
+## Bài tập về nhà
+
+Thêm script test cho chức năng Delete Note.
+Verify sau khi delete note, note được xoá không xuất hiên trên Home Page
+
+## Revert the deleted note
 
 # Buổi 9, 10: Webview
 

@@ -1,6 +1,6 @@
 import Page from './page.js';
 
-export default class TutorialPage extends Page {
+class TutorialPage extends Page {
     /**
      * define selectors using getter methods
      */
@@ -20,3 +20,5 @@ export default class TutorialPage extends Page {
         await this.skipBtn.click()
     }
 }
+
+export default new TutorialPage()
