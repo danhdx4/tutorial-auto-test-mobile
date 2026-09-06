@@ -4,6 +4,7 @@
 
 - Framework mã nguồn mở dùng để **Automation Testing Mobile Apps**
 - Hỗ trợ:
+
   - Android
   - iOS
   - Native App
@@ -19,6 +20,7 @@
 
 - Framework Automation Testing dành cho JavaScript/TypeScript
 - Tích hợp sẵn với:
+
   - Appium
   - Selenium
   - Browser Automation
@@ -262,7 +264,7 @@ it("Working with Dialog Boxes", async () => {
   // open the target page
   await driver.startActivity(
     "io.appium.android.apis",
-    ".app.AlertDialogSamples",
+    ".app.AlertDialogSamples"
   );
 
   // click on first dialog
@@ -299,7 +301,7 @@ it.only("Vertical Scrolling1", async () => {
 
   // scrollTextIntoView
   await $(
-    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")',
+    'android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("Secure Surfaces")'
   ).click();
 
   // assertion Secure Dialog to be Exist
@@ -317,11 +319,11 @@ it.only("Horizontal Scrolling1", async () => {
 
   // Horizontal scrolling
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
   );
 
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollBackward()"
   );
 
   await driver.pause(3000);
@@ -406,7 +408,7 @@ it.only("App & Device APIs", async () => {
   // 8. Verify app vẫn hoạt động
   // Locator for date field
   const dateField = await $(
-    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")',
+    'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
   );
 
   // assert default date time
@@ -418,7 +420,7 @@ it.only("App & Device APIs", async () => {
 
   // Scroll horizontal
   await $(
-    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()",
+    "android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()"
   );
   await $('android=new UiSelector().text("10")').click();
   await $('android=new UiSelector().resourceId("android:id/button1")').click();
@@ -431,7 +433,7 @@ it.only("App & Device APIs", async () => {
 
 ## Bài tập về nhà
 
-1. Setup capability trong file config để chạy App /app/android/ColorNote+Notepad.apk
+1. Setup capability trong file config để chạy App /app/android/ColorNote+pad.apk
 2. Setup trong Appium Inspector để debug được app trong step 1
 3. Chạy thử script trong test/specs/example.spec.ts để test setup thành công.
    Lưu ý: Do file config chỉ có 1 file, nên mọi người clone file vào thư mục của mình để config nha
@@ -466,11 +468,11 @@ it.only("App & Device APIs", async () => {
 describe("Add Notes", () => {
   it("Skip tutorial", async () => {
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")'
     ).click();
 
     const addNoteText = await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
     );
     await expect(addNoteText).toBeDisplayed();
   });
@@ -478,24 +480,24 @@ describe("Add Notes", () => {
   it("Should be add a new note successfully", async () => {
     // add note, save changes, verify note
     const emptyText = await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
     );
     await emptyText.click();
     await $('android=new UiSelector().text("Text")').click();
     await expect(
       $(
-        'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/datetime_relative")',
-      ),
+        'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/datetime_relative")'
+      )
     ).toBeDisplayed();
 
     // add note title
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")'
     ).addValue("Favorite Anime");
 
     // add note body
     await $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")'
     ).addValue("OnePiece\nNaruto\nGhibli");
 
     // save the changes
@@ -505,7 +507,7 @@ describe("Add Notes", () => {
     // assertion
     await expect(emptyText).not.toBeExisting();
     const firstNoteTitle = $(
-      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/title")',
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/title")'
     );
     await expect(firstNoteTitle).toHaveText("Favorite Anime");
   });
@@ -520,7 +522,206 @@ Sửa lại Note vừa tạo
 - Sửa nội dung body
 - Verify thông tin đã sửa
 
-## Delete Note
+## Page Object Modle
+
+```ts
+//------------------- Tutorial Page -------------------
+import Page from "./page.js";
+
+export default class TutorialPage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get pageTitle() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/textTitle")'
+    );
+  }
+  public get skipBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/btn_start_skip")'
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.pageTitle).toBeDisplayed();
+  }
+
+  public async skipTutorial() {
+    await this.skipBtn.click();
+  }
+}
+
+//------------------- Home Page -------------------
+import Page from "./page.js";
+export type Type = "Text" | "Checklist";
+
+export default class HomePage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get logo() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")'
+    );
+  }
+  public get addNoteText() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")'
+    );
+  }
+  public get addNoteBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/main_btn1")'
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.logo).toBeDisplayed();
+  }
+
+  public async chooseTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await targetNote.click();
+  }
+
+  public async addNewNote(type: Type) {
+    await this.addNoteBtn.click();
+    const typeBtn = $(`android=new UiSelector().text("${type}")`);
+    await typeBtn.click();
+  }
+
+  public async verifyTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await expect(targetNote).toBeDisplayed();
+  }
+}
+
+//------------------- Note Page -------------------
+import Page from "./page.js";
+export type NoteData = {
+  title: string;
+  body: string;
+};
+
+export default class NotePage extends Page {
+  /**
+   * define selectors using getter methods
+   */
+  public get menuBtn() {
+    return $("~More");
+  }
+  public get editBtn() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")'
+    );
+  }
+
+  public get titleInputField() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_title")'
+    );
+  }
+
+  public get bodyInputField() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_note")'
+    );
+  }
+
+  /**
+   * define functions
+   */
+  public async waitForLoad() {
+    await expect(this.menuBtn).toBeDisplayed();
+  }
+
+  public async chooseTargetNote(title: string) {
+    const targetNote = $(`android=new UiSelector().text("${title}")`);
+    await targetNote.click();
+  }
+
+  public async fillNote(data: NoteData) {
+    await this.titleInputField.setValue(data.title);
+    await this.bodyInputField.setValue(data.body);
+  }
+}
+
+//------------------- Spec -------------------
+import HomePage from "../../pageobjects/home.page.ts";
+import NotePage, { NoteData } from "../../pageobjects/note.page.ts";
+import TutorialPage from "../../pageobjects/tutorial.page.ts";
+
+const data: NoteData = {
+  title: "Favorite Anime",
+  body: "OnePice\nNaruto\nGhibli",
+};
+const editData: NoteData = {
+  title: "Edit - Favorite Anime",
+  body: "OnePice\nNaruto\nGhibli\nDoraemon",
+};
+
+describe("Add Notes", () => {
+  it("Skip tutorial", async () => {
+    const tutorialPage = new TutorialPage();
+    await tutorialPage.skipTutorial();
+  });
+
+  it("Should be add a new note successfully", async () => {
+    // add note, save changes, verify note
+    //Navigate to add note screen
+    const homePage = new HomePage();
+    const notePage = new NotePage();
+    await homePage.waitForLoad();
+    await homePage.addNewNote("Text");
+    await notePage.waitForLoad();
+    await notePage.fillNote(data);
+
+    // save the changes
+    await driver.back(); // saved
+    await driver.back(); // back to home
+
+    // assertion
+    await homePage.waitForLoad();
+    await homePage.verifyTargetNote(data.title);
+  });
+
+  it("Should be edit the note successfully", async () => {
+    //In the Home page, click on target note to edit
+    const homePage = new HomePage();
+    const notePage = new NotePage();
+    await homePage.chooseTargetNote(data.title);
+
+    // Assert: verify the edit note page displayed
+    await notePage.waitForLoad();
+
+    // Edit note
+    await notePage.editBtn.click();
+    await notePage.fillNote(editData);
+
+    // save the changes
+    await driver.back(); // saved
+    await driver.back(); // back to home
+
+    // assertion note to be changed
+    await homePage.waitForLoad();
+    await homePage.verifyTargetNote(editData.title);
+  });
+});
+```
+
+## Bài tập về nhà
+
+Thêm script test cho chức năng Delete Note.
+Verify sau khi delete note, note được xoá không xuất hiên trên Home Page
+
+## Revert the deleted note
 
 # Buổi 9, 10: Webview
 
