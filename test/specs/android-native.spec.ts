@@ -1,5 +1,3 @@
-import { getDateTime } from "../utils/helper.spec.ts"
-
 describe('Adnroid Native Feature Test', () => {
     it('Access an Activity directly', async () => {
         // access activity
