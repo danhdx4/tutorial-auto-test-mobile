@@ -1,5 +1,5 @@
 describe("Android - Finding Elements", () => {
-  it.only("Click Views", async () => {
+  it("Click Views", async () => {
     //Click Views
     const ViewBtn = await $("~Views");
     await expect(ViewBtn).toBeExisting();
@@ -7,7 +7,6 @@ describe("Android - Finding Elements", () => {
 
     //Click Date Widgets
     await $("~Date Widgets").click();
-
     //Click Dialog
     await $("~1. Dialog").click();
     
@@ -56,5 +55,16 @@ await expect(
     'android=new UiSelector().resourceId("io.appium.android.apis:id/dateDisplay")'
   )
 ).toBeExisting();
+  });
+});
+
+describe("App Lifecycle", () => {
+  it("Background and Relaunch App", async () => {
+    await driver.background(5);
+    await driver.relaunchActiveApp();
+  });
+
+  it("should lock the screen", async () => {
+    await browser.lock();
   });
 });

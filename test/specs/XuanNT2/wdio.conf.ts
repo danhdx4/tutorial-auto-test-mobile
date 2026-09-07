@@ -1,4 +1,4 @@
-import path, { join } from "path";
+import path from "path";
 
 export const config: WebdriverIO.Config = {
   //
@@ -25,10 +25,7 @@ export const config: WebdriverIO.Config = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  specs: [
-    './test/specs/**/*.ts',
-    // 'test/specs/example.spec.ts'
-  ],
+  specs: ["./test/specs/example.spec.ts"],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -57,56 +54,23 @@ export const config: WebdriverIO.Config = {
   //
   capabilities: [
     // {
-    //     platformName: "Android",
-    //     "appium:deviceName": "Pixel 4",
-    //     "appium:platformVersion": "12.0",
-    //     "appium:automationName": "UiAutomator2",
-    //     "appium:app": path.join(
-    //         process.cwd(),
-    //         "app",
-    //         "android",
-    //         "ColorNote+Notepad.apk"
-    //     ),
-    // },
-    // {
     //   platformName: "Android",
     //   "appium:deviceName": "Pixel 4",
     //   "appium:platformVersion": "12.0",
     //   "appium:automationName": "UiAutomator2",
-    //   "appium:appPackage": "io.appium.android.apis",
-    //   "appium:appActivity": ".ApiDemos",
+    //   "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
     // },
     {
       platformName: "Android",
       "appium:deviceName": "Pixel 4",
-      "appium:platformVersion": "12.0",
+      "appium:platformVersion": "17.0",
       "appium:automationName": "UiAutomator2",
-<<<<<<< HEAD
-      "appium:appPackage": "com.socialnmobile.dictapps.notepad.color.note",
-      "appium:appActivity": "com.socialnmobile.colornote.activity.Main",
-      "appium:autoGrantPermissions": true,
-    }
-=======
-      "appium:app": join(
-        process.cwd(),
-        "app",
-        "android",
-        "ColorNote+Notepad.apk",
-      ),
-      "appium:autoGrantPermissions": true,
+      // "appium:appPackage": "io.appium.android.apis",
+      // "appium:appActivity": ".ApiDemos",
+      // "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
+      "appium:app": "/app/android/ColorNote+Notepad.apk",
     },
-    // {
-    //   platformName: "Android",
-    //   "appium:deviceName": "Pixel 4",
-    //   "appium:platformVersion": "12.0",
-    //   "appium:automationName": "UiAutomator2",
-    //   "appium:appPackage": "io.appium.android.apis",
-    //   "appium:appActivity": ".apiDemos",
-    // },
->>>>>>> f3ebde290b085123dd65a9f3d82280dae095870d
   ],
-
-
 
   //
   // ===================
