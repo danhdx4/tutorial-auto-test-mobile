@@ -43,9 +43,9 @@ class NotePage extends Page {
         //todo
     }
 
-    public async fillNote(NoteData: NoteData) {
-        await this.noteTitle.setValue(NoteData.title)
-        await this.noteBody.setValue(NoteData.body)
+    public async fillNote(noteData: NoteData) {
+        await this.noteTitle.setValue(noteData.title)
+        await this.noteBody.setValue(noteData.body)
     }
 
     public async editNote() {
