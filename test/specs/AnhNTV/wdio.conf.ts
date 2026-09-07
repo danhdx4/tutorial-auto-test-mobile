@@ -1,5 +1,3 @@
-import path from "path";
-
 export const config: WebdriverIO.Config = {
   //
   // ====================
