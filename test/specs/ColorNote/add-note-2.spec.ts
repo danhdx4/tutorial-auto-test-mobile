@@ -51,4 +51,29 @@ describe("add-note", () => {
         await homePage.waitForLoad()
         await homePage.verifyTargetNote(editData.title)
     });
+
+    it("Delete the note successfully", async () => {
+        //Tại home click vào note vừa edit
+        await homePage.chooseTargetNote(editData.title)
+        await notePage.waitForLoad()
+
+        // delete note
+        await notePage.otherBtn.click()
+        await notePage.chooseOptionFromMenu('Delete')
+        await driver.acceptAlert()
+
+        //assertion
+        await homePage.waitForLoad()
+        await expect(homePage.targetNote(editData.title)).not.toBeExisting()
+    })
+
+    it("Revert the deleted note successfully", async () => {
+        // Open the Trash Can Page
+
+        // Revert the note
+
+        // Verify the note in the Trash Can Page
+
+        // Verify the note in the Home Page
+    })
 });
