@@ -35,8 +35,8 @@ class HomePage extends Page {
         await expect(targetNote).toBeExisting()
     }
 
-    public async chooseTargetNote(NoteData: NoteData) {
-        const targetNote = this.targetNote(NoteData.title)
+    public async chooseTargetNote(noteData: NoteData) {
+        const targetNote = this.targetNote(noteData.title)
         await targetNote.click()
     }
 

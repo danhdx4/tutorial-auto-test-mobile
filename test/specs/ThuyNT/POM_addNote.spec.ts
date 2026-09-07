@@ -1,21 +1,11 @@
 import HomePage from '../../pageobjects/ThuyNT/home.page.ts';
 import AddNotePage from '../../pageobjects/ThuyNT/note.page.ts';
 import TutorialPage from '../../pageobjects/ThuyNT/tutorial.page.ts';
-
+import { noteData } from '../../data/note.data.ts';
 const tutorial = TutorialPage;
 const home = HomePage;
 const addNote = AddNotePage;
 
-const noteData = {
-    add: {
-        title: "Note",
-        body: "Add Note"
-    },
-    edit: {
-        title: "Note 1",
-        body: "Edit Note"
-    }
-};
 
 describe('Note', () => {
 
@@ -29,7 +19,6 @@ describe('Note', () => {
 
     it('Add note successfully', async () => {
         await home.addNote.click();
-
         await home.chooseTypeNote('Text');
 
         await addNote.fillNote(noteData.add);
@@ -44,7 +33,6 @@ describe('Note', () => {
         await home.chooseTargetNote(noteData.add);
 
         await addNote.editNote();
-
         await addNote.fillNote(noteData.edit);
 
         await driver.back();
