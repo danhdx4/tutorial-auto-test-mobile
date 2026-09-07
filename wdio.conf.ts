@@ -56,21 +56,29 @@ export const config: WebdriverIO.Config = {
   //
   capabilities: [
     // {
-    //   platformName: "Android",
-    //   "appium:deviceName": "Pixel 4",
-    //   "appium:platformVersion": "12.0",
-    //   "appium:automationName": "UiAutomator2",
-    //   "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
+    //     platformName: "Android",
+    //     "appium:deviceName": "Pixel 4",
+    //     "appium:platformVersion": "12.0",
+    //     "appium:automationName": "UiAutomator2",
+    //     "appium:app": path.join(
+    //         process.cwd(),
+    //         "app",
+    //         "android",
+    //         "ColorNote+Notepad.apk"
+    //     ),
     // },
     {
       platformName: "Android",
       "appium:deviceName": "Pixel 4",
       "appium:platformVersion": "12.0",
       "appium:automationName": "UiAutomator2",
-      "appium:appPackage": "io.appium.android.apis",
-      "appium:appActivity": ".ApiDemos",
-    },
+      "appium:appPackage": "com.socialnmobile.dictapps.notepad.color.note",
+      "appium:appActivity": "com.socialnmobile.colornote.activity.Main",
+      "appium:autoGrantPermissions": true,
+    }
   ],
+
+
 
   //
   // ===================
