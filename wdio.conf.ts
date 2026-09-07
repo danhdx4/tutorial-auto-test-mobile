@@ -1,4 +1,4 @@
-import path, { join } from "path";
+import { join } from "path";
 
 export const config: WebdriverIO.Config = {
   //
