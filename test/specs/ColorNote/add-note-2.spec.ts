@@ -72,8 +72,6 @@ describe("add-note", () => {
 
         // Revert the note
 
-        // Verify the note in the Trash Can Page
-
         // Verify the note in the Home Page
     })
 });
