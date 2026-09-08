@@ -18,7 +18,7 @@ class HomePage extends Page {
     }
 
     public get trashCanMenu() {
-        return $('android=new UiSelector().text("Trash Can").instance(1)')
+        return $('android=new UiSelector().text("Trash Can")')
     }
 
     public async waitForLoad() {

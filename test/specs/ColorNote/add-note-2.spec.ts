@@ -1,5 +1,6 @@
 import homePage from "../../pageobjects/home.page.ts";
 import notePage, { NoteData } from "../../pageobjects/note.page.ts";
+import trashCanPage from "../../pageobjects/trash.can.page.ts";
 import tutorialPage from "../../pageobjects/tutorial.page.ts";
 
 const newData: NoteData = {
@@ -69,9 +70,21 @@ describe("add-note", () => {
 
     it("Revert the deleted note successfully", async () => {
         // Open the Trash Can Page
+        await homePage.menuBtn.click();
+        await homePage.trashCanMenu.click();
+        await trashCanPage.waitForLoad();
 
         // Revert the note
+        await trashCanPage.targetNote(editData.title).click();
+        await notePage.waitForLoad();
+        await notePage.revertBtn.click();
+        await driver.acceptAlert();
+        await expect(notePage.editBtn).toBeExisting();
 
-        // Verify the note in the Home Page
-    })
+        // Verify the note in the Trash Can Page
+        await driver.back(); // back to trash can page
+        await driver.back(); // back to home page
+        await homePage.waitForLoad();
+        await homePage.verifyTargetNote(editData.title);
+    });
 });
