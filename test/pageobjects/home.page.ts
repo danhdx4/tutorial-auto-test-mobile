@@ -13,6 +13,14 @@ class HomePage extends Page {
         return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',)
     }
 
+    public get menuBtn() {
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/icon_nav")')
+    }
+
+    public get trashCanMenu() {
+        return $('android=new UiSelector().text("Trash Can").instance(1)')
+    }
+
     public async waitForLoad() {
         await expect(this.logo).toBeDisplayed()
     }
