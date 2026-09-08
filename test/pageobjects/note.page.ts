@@ -25,6 +25,10 @@ class NotePage extends Page {
         return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")')
     }
 
+    public get revertBtn() {
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")')
+    }
+
     /**
      * define functions
      */

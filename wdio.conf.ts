@@ -1,4 +1,4 @@
-import { join } from "path";
+import path, { join } from "path";
 
 export const config: WebdriverIO.Config = {
   //
@@ -57,16 +57,11 @@ export const config: WebdriverIO.Config = {
   //
   capabilities: [
     // {
-    //     platformName: "Android",
-    //     "appium:deviceName": "Pixel 4",
-    //     "appium:platformVersion": "12.0",
-    //     "appium:automationName": "UiAutomator2",
-    //     "appium:app": path.join(
-    //         process.cwd(),
-    //         "app",
-    //         "android",
-    //         "ColorNote+Notepad.apk"
-    //     ),
+    //   platformName: "Android",
+    //   "appium:deviceName": "Pixel 4",
+    //   "appium:platformVersion": "12.0",
+    //   "appium:automationName": "UiAutomator2",
+    //   "appium:app": path.join(process.cwd(), "app/android/ApiDemos-debug.apk"),
     // },
     // {
     //   platformName: "Android",
@@ -77,27 +72,31 @@ export const config: WebdriverIO.Config = {
     //   "appium:appActivity": ".ApiDemos",
     // },
     {
-        platformName: "Android",
-        "appium:deviceName": "Pixel 4",
-        "appium:platformVersion": "12.0",
-        "appium:automationName": "UiAutomator2",
-        "appium:appPackage": "com.socialnmobile.dictapps.notepad.color.note",
-        "appium:appActivity": "com.socialnmobile.colornote.activity.Main",
-        "appium:autoGrantPermissions": true,
+      platformName: "Android",
+      "appium:deviceName": "Pixel 4",
+      "appium:platformVersion": "12.0",
+      "appium:automationName": "UiAutomator2",
+      "appium:app": join(process.cwd(), "app", "android", "ColorNote+Notepad.apk"),
+      "appium:autoGrantPermissions": true,
     },
-],
-  
-
-
+    // {
+    //   platformName: "Android",
+    //   "appium:deviceName": "Pixel 4",
+    //   "appium:platformVersion": "12.0",
+    //   "appium:automationName": "UiAutomator2",
+    //   "appium:appPackage": "io.appium.android.apis",
+    //   "appium:appActivity": ".apiDemos",
+    // },
+  ],
 
   //
   // ===================
   // Test Configurations
   // ===================
   // Define all options that are relevant for the WebdriverIO instance here
-  //
-  // Level of logging verbosity: trace | debug | info | warn | error | silent
+  //fo | warn | error | silent
   logLevel: "info",
+  // Level of logging verbosity: trace | debug | in
   //
   // Set specific log levels per logger
   // loggers:
