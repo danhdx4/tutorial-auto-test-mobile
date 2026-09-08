@@ -38,4 +38,7 @@ export default class HomePage extends Page {
     public targetNote(title: string) {
         return $(`android=new UiSelector().text("${title}")`);
     }
+    public get hbgMenu(){
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/icon_nav")')
+    }
 }
