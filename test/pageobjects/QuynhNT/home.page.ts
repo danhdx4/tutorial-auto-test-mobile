@@ -14,6 +14,14 @@ export default class HomePage extends Page {
       'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',
     );
   }
+  public get bgmenu() {
+    return $(
+      'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/icon_nav")',
+    );
+  }
+  public get trashCan() {
+    return $('android=new UiSelector().text("Trash Can")');
+  }
   public async waitForLoad() {
     await expect(this.logo).toBeDisplayed();
   }
@@ -37,5 +45,11 @@ export default class HomePage extends Page {
   public async verifyNoteNotExist(title: string) {
     const targetNote = $(`android=new UiSelector().text("${title}")`);
     await expect(targetNote).not.toBeExisting();
+  }
+  public async btnBBmnu() {
+    await this.bgmenu.click();
+  }
+  public async btnTrashCan() {
+    await this.trashCan.click();
   }
 }
