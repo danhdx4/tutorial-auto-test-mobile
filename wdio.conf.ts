@@ -71,14 +71,14 @@ export const config: WebdriverIO.Config = {
     //   "appium:appPackage": "io.appium.android.apis",
     //   "appium:appActivity": ".ApiDemos",
     // },
-    {
-      platformName: "Android",
-      "appium:deviceName": "Pixel 4",
-      "appium:platformVersion": "12.0",
-      "appium:automationName": "UiAutomator2",
-      "appium:app": join(process.cwd(), "app", "android", "ColorNote+Notepad.apk"),
-      "appium:autoGrantPermissions": true,
-    },
+    // {
+    //   platformName: "Android",
+    //   "appium:deviceName": "Pixel 4",
+    //   "appium:platformVersion": "12.0",
+    //   "appium:automationName": "UiAutomator2",
+    //   "appium:app": join(process.cwd(), "app", "android", "ColorNote+Notepad.apk"),
+    //   "appium:autoGrantPermissions": true,
+    // },
     // {
     //   platformName: "Android",
     //   "appium:deviceName": "Pixel 4",
@@ -87,6 +87,16 @@ export const config: WebdriverIO.Config = {
     //   "appium:appPackage": "io.appium.android.apis",
     //   "appium:appActivity": ".apiDemos",
     // },
+    {
+      platformName: "Android",
+      "appium:deviceName": "Pixel 4",
+      "appium:platformVersion": "12.0",
+      "appium:automationName": "UiAutomator2",
+      "appium:app": join(process.cwd(), "app", "android", "android.wdio.native.app.v2.2.0.apk"),
+      "appium:autoGrantPermissions": true,
+      // "appium:chromedriverExecutable": join(process.cwd(), "webview", "mac", "chromedriver"), // config for mac
+      "appium:chromedriverExecutable": join(process.cwd(), "webview", "win", "chromedriver.exe"), // config for win
+    },
   ],
 
   //
