@@ -1,36 +1,22 @@
 import Page from './page.js';
-
 export type TypeNote = 'Text' | 'Checklist'
+
 export type NoteData = {
     title: string,
     body: string
 }
 
-
-class HomePage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    public get logo() {
-        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")')
-    }
-    public get addNote() {
-        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/empty_text")',)
-    }
-
-    public get menuHamburger() {
-        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/icon_nav")')
-    }
-
-    public get trashCan() {
+class TrashCanPage extends Page {
+    public get trashCanPage() {
         return $('android=new UiSelector().text("Trash Can")')
     }
-    public async waitForLoad() {
-        await expect(this.logo).toBeDisplayed()
+
+    public get revertBtn() {
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/edit_btn")')
     }
 
-    public async verifyInitState() {
-        await expect(this.addNote).toBeExisting()
+    public get revertConfirmBtn() {
+        return $('android=new UiSelector().resourceId("android:id/button1")')
     }
 
     async chooseTypeNote(type: TypeNote) {
@@ -56,7 +42,15 @@ class HomePage extends Page {
         await expect(targetNote).not.toBeExisting()
     }
 
+    public async waitForLoad() {
+        await expect(this.trashCanPage).toBeDisplayed()
+    }
+
+    public async revertNote() {
+        await this.revertBtn.click()
+        await this.revertConfirmBtn.click()
+    }
 
 }
 
-export default new HomePage()
+export default new TrashCanPage()
