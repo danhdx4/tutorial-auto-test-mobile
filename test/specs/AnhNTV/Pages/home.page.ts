@@ -2,9 +2,19 @@ import Page from './page.js';
 
 class HomePage extends Page {
 
+    public get logo() {
+        return $('android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/logo_image")');
+    }
+
     public get pageTitle() {
         return $(
             'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/textTitle")'
+        );
+    }
+
+    public get otherBtn() {
+        return $(
+            'android=new UiSelector().resourceId("com.socialnmobile.dictapps.notepad.color.note:id/icon_nav")'
         );
     }
 //Neo bằng text Add note
@@ -15,7 +25,7 @@ class HomePage extends Page {
     }
 //Đợi cho trang Home load xong
     public async waitForLoad() {
-        await expect(this.addNoteText).toBeDisplayed();
+        await expect(this.logo).toBeDisplayed();
     }
 //Kiểm tra text addnote hiển thị
     public async expectAddNoteDisplayed() {
@@ -25,6 +35,14 @@ class HomePage extends Page {
     public async clickAddNote() {
         await this.addNoteText.click();
         await $('android=new UiSelector().text("Text")').click();
+    }
+
+    public async clickOther() {
+        await this.otherBtn.click();
+    }
+
+    public async clickTrashCan() {
+        await $('android=new UiSelector().text("Trash Can")').click();
     }
 //Verify Add note đang hiển thị
     public async expectNoteDisplayed(title: string) {
