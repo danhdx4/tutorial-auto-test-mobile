@@ -801,6 +801,129 @@ it("Revert the deleted note successfully", async () => {
 
 # Buổi 9, 10: Webview
 
+## Selector in the web
+
+Selector in the web
+Link: https://webdriver.io/docs/selectors/
+
+1. CSS selector
+
+```ts
+await $("#username");
+await $(".login-button");
+await $("button");
+```
+
+2. Text
+
+```ts
+// exact text
+let header = await $("h1=Welcome to my Page");
+header = await $("h1.=WeLcOme tO My PAge"); // apply to both of low case and upper case
+// partial text
+let header = await $("h1*=Welcome");
+header = await $("h1.*=WeLcoMe");
+```
+
+3. Accessibility Name Selector
+   Cú pháp : $('aria/<accessible-name>')
+   Các loại sử dụng: https://webdriver.io/docs/selectors/#accessibility-name-selector
+
+   ```ts
+   // Fetch by aria-label
+   <div aria-label="foobar">Hello World!</div>
+   const elem = await $('aria/foobar')
+
+   // Fetch by aria-labelledby
+   <button aria-labelledby="ref-1">Click Me!</button>
+   <div id="ref-1">Some Button</div>
+   const elem = await $('aria/Some Button')
+
+   // Fetch by content
+   <h1>Some Heading!</h1>
+   const elem = await $('aria/Some Heading!')
+
+   // Fetch by title
+   <a href="https://webdriver.io" title="foobar">Hello World!</h1>
+   const elem = await $('aria/foobar')
+
+   // Fetch by alt property
+   <img src="/some/image.png" alt="Some Picture" />
+   const elem = await $('aria/Some Picture')
+   ```
+
+## Setup
+
+1. Setup in Config file
+2. Setup in Appium Inspector
+3. Download and use chromedriver
+
+```ts
+ {
+   platformName: "Android",
+   "appium:deviceName": "Pixel 4",
+   "appium:platformVersion": "12.0",
+   "appium:automationName": "UiAutomator2",
+   "appium:app": join(process.cwd(), "app", "android", "android.wdio.native.app.v2.2.0.apk"),
+   "appium:autoGrantPermissions": true,
+   // "appium:chromedriverExecutable": join(process.cwd(), "webview", "mac", "chromedriver"), // config for mac
+   "appium:chromedriverExecutable": join(process.cwd(), "webview", "win", "chromedriver.exe"), // config for win
+ },
+```
+
+4. Check context and switch context
+5. Interact with the app such as webview app
+
+```ts
+describe("Webview App", () => {
+  it("Webview context", async () => {
+    await $("~Webview").click();
+    await driver.pause(5000);
+
+    /** ----------- switch back to Webviewß context -------------*/
+
+    // get context
+    let currentContext = await driver.getContext();
+    console.log("Current context: ", currentContext);
+
+    // get list of contexts
+    const listOfContexts = await driver.getContexts();
+    console.log("List of context: ", listOfContexts);
+
+    // witch to webview
+    await driver.switchContext("WEBVIEW_com.wdiodemoapp");
+    currentContext = await driver.getContext();
+    console.log("Current context: ", currentContext);
+
+    /** -----------interaction with the page -------------*/
+    const getStartedBtn = $(".button=Get Started");
+    await getStartedBtn.scrollIntoView();
+    await getStartedBtn.click();
+    let pageTitle = await driver.getTitle();
+    expect(pageTitle).toBe("Getting Started | WebdriverIO");
+
+    const searchIcon = $(".DocSearch.DocSearch-Button");
+    await searchIcon.click();
+    const searchInputField = $(".DocSearch-Input");
+    await searchInputField.setValue("Selectors");
+    //click on the first result item
+    await $("#docsearch-hits0-item-0").click();
+    pageTitle = await driver.getTitle();
+    expect(pageTitle).toBe("Selectors | WebdriverIO");
+
+    /** ----------- switch back to Native context -------------*/
+    await driver.switchContext("NATIVE_APP");
+    await $("~Home").click();
+    const logoImage = $(
+      'android=new UiSelector().className("android.widget.ImageView").instance(0)',
+    );
+    await expect(logoImage).toBeExisting();
+  });
+});
+
+// 'NATIVE_APP', 'WEBVIEW_com.wdiodemoapp'
+```
+
 # Buổi 11: Reporting
 
 # Buổi 12: Bài tập lớn

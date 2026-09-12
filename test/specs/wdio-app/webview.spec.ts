@@ -3,6 +3,8 @@ describe('Webview App', () => {
         await $('~Webview').click()
         await driver.pause(5000)
 
+        /** ----------- switch back to Webviewß context -------------*/
+
         // get context
         let currentContext = await driver.getContext()
         console.log("Current context: ", currentContext)
@@ -16,7 +18,15 @@ describe('Webview App', () => {
         currentContext = await driver.getContext()
         console.log("Current context: ", currentContext)
 
-        // interaction with the page
+        /** -----------interaction with the page -------------*/
+        // Click on Get Started Btn and verify page title
+
+        // Search with key: Selectors
+
+        //click on the first result item and verify page title
+
+        /** ----------- switch back to Native context -------------*/
+
     })
 })
 
