@@ -31,7 +31,15 @@ app/android/build/
 app/android/.gradle/
 app/android/app/build/
 app/android/local.properties
+<<<<<<< HEAD
 app\android\chromedriver-win64 (1)\chromedriver-win64\chromedriver.exe
+=======
+app/android/android.wdio.native.app.v2.2.0.apk
+
+# Webview
+webview
+
+>>>>>>> ff523616eda4e2d032c22657bd9f5ea574bb1dff
 # Temporary files
 .tmp/
 tmp/
