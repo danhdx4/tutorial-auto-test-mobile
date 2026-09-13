@@ -31,7 +31,7 @@ app/android/build/
 app/android/.gradle/
 app/android/app/build/
 app/android/local.properties
-
+app\android\chromedriver-win64 (1)\chromedriver-win64\chromedriver.exe
 # Temporary files
 .tmp/
 tmp/
