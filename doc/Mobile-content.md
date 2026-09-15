@@ -924,7 +924,49 @@ describe("Webview App", () => {
 // 'NATIVE_APP', 'WEBVIEW_com.wdiodemoapp'
 ```
 
-# Buổi 11: Reporting
+# Buổi 11: Reporting with Allure
+
+Link: https://webdriver.io/docs/allure-reporter
+
+1. Installation
+   command: npm install --save-dev @wdio/allure-reporter
+
+2. Basic Configuration
+
+```ts
+//config
+export const config = {
+  // ...
+  reporters: ["spec", ["allure", { outputDir: "allure-results" }]],
+};
+
+// generate allure results and open report
+allure generate allure-results --clean  && allure open
+
+```
+
+3. Advance config
+
+```ts
+[
+  "allure",
+  {
+    outputDir: "./allure-results",
+    disableWebdriverScreenshotsReporting: false,
+  },
+];
+
+// after test config
+afterTest: async function (test, context, result) {
+    if (result.error) {
+        await browser.takeScreenshot()
+    }
+}
+
+// addStep in Allure report
+import { addStep } from "@wdio/allure-reporter";
+addStep('switch back to Webview context')
+```
 
 # Buổi 12: Bài tập lớn
 
