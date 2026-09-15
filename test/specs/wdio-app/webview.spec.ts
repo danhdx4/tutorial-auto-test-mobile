@@ -19,14 +19,26 @@ describe('Webview App', () => {
         console.log("Current context: ", currentContext)
 
         /** -----------interaction with the page -------------*/
-        // Click on Get Started Btn and verify page title
+        const getStartedBtn = $('.button=Get Started')
+        await getStartedBtn.scrollIntoView()
+        await getStartedBtn.click()
+        let pageTitle = await driver.getTitle()
+        expect(pageTitle).toBe('Getting Started | WebdriverIO')
 
-        // Search with key: Selectors
-
-        //click on the first result item and verify page title
+        const searchIcon = $('.DocSearch.DocSearch-Button')
+        await searchIcon.click()
+        const searchInputField = $('.DocSearch-Input')
+        await searchInputField.setValue('Selectors')
+        //click on the first result item
+        await $('#docsearch-hits0-item-0').click()
+        pageTitle = await driver.getTitle()
+        expect(pageTitle).toBe('Selectors | WebdriverIO')
 
         /** ----------- switch back to Native context -------------*/
-
+        await driver.switchContext('NATIVE_APP')
+        await $('~Home').click()
+        const logoImage = $('android=new UiSelector().className("android.widget.ImageView").instance(0)')
+        await expect(logoImage).toBeExisting()
     })
 })
 
