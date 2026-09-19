@@ -14,5 +14,9 @@ describe('Webview App', () => {
         //switch webview
         await driver.switchContext('WEBVIEW_com.wdiodemoapp')
         console.log('Current Context after switch: ', currentContext)
+
+        // click on Started BTn and verify page title
+        await 
+        await 
     })
 })

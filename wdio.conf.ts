@@ -79,18 +79,7 @@ export const config: WebdriverIO.Config = {
     //   "appium:app": join(process.cwd(), "app", "android", "ColorNote+Notepad.apk"),
     //   "appium:autoGrantPermissions": true,
     // },
-<<<<<<< HEAD
-    {
-      platformName: "Android",
-      "appium:deviceName": "Pixel 4",
-      "appium:platformVersion": "12.0",
-      "appium:automationName": "UiAutomator2",
-      "appium:app": join(process.cwd(), "app", "android", "android.wdio.native.app.v2.2.0.apk"),
-      "appium:autoGrantPermissions": true,
-        "appium:chromedriverExecutableDir": join(process.cwd(), "chromedriver-mobile"),
-    },
-=======
->>>>>>> ff523616eda4e2d032c22657bd9f5ea574bb1dff
+
     // {
     //   platformName: "Android",
     //   "appium:deviceName": "Pixel 4",
@@ -158,7 +147,7 @@ export const config: WebdriverIO.Config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: [["appium", { args: { chromedriver_autodownload: true } }]],
+  services: ["appium"],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
