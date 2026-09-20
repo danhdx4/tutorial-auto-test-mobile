@@ -42,3 +42,4 @@ tmp/
 **/chromedriver.exe
 chromedriver/
 chromedriver.exe
+*.apk
