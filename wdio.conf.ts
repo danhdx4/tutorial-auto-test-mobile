@@ -80,30 +80,27 @@ export const config: WebdriverIO.Config = {
 
   framework: "mocha",
 
-  // reporters: ["spec"],
-  reporters: ["spec",
-    // ["allure", { outputDir: "allure-results" }]
+  reporters: [
+    "spec",
+    [
+      "allure",
+      {
+        outputDir: "./allure-results",
+        disableWebdriverScreenshotsReporting: false,
+        disableWebdriverStepsReporting: true,
+        addConsoleLogs: true,
+      },
+    ],
   ],
-  // reporters: ["spec", [
-  //   "allure",
-  //   {
-  //     outputDir: "./allure-results",
-  //     disableWebdriverScreenshotsReporting: false,
-  //     disableWebdriverStepsReporting: true, // Không report WebdriverIO commands
-  //     addConsoleLogs: true // Add Consolog into allure report
-  //   },
-  // ]],
 
   mochaOpts: {
     ui: "bdd",
-    timeout: 60000,
+    timeout: 100000,
   },
 
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  // },
-  // afterTest: async function (test, context, result) {
-  //   if (result.error) {
-  //     await browser.takeScreenshot()
-  //   }
-  // }
+  afterTest: async function (test, context, { error, result, duration, passed, retries }) {
+    if (error) {
+      await browser.takeScreenshot();
+    }
+  },
 };
