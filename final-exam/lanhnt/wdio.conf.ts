@@ -22,8 +22,8 @@ export const config: WebdriverIO.Config = {
             "appium:automationName": "UiAutomator2",
             "appium:app": join(process.cwd(), "app", "android", "android.wdio.native.app.v2.2.0.apk"),
             "appium:autoGrantPermissions": true,
-            // "appium:chromedriverExecutable": join(process.cwd(), "webview", "mac", "chromedriver"), // config for mac
-            "appium:chromedriverExecutable": join(process.cwd(), "webview", "win", "chromedriver.exe"), // config for win
+            "appium:chromedriverExecutable": join(process.cwd(), "webview", "mac", "chromedriver"), // config for mac
+            // "appium:chromedriverExecutable": join(process.cwd(), "webview", "win", "chromedriver.exe"), // config for win
         },
     ],
 
