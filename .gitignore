@@ -36,6 +36,14 @@ app/android/android.wdio.native.app.v2.2.0.apk
 # Webview
 webview
 
+# Local ChromeDriver binaries
+**/webview/**/chromedriver.exe
+**/win/**/chromedriver.exe
+**/chromedriver.exe
+chromedriver/
+chromedriver.exe
+*.apk
+
 # Temporary files
 .tmp/
 tmp/
