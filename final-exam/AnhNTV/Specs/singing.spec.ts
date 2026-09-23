@@ -1,4 +1,5 @@
-import LoginPage from '../Pages/login.page.js';
+import LoginPage from '../pages/login.page.js';
+import { SignUpData } from '../data/sing-up.data.js';
 
 describe('Sign up', () => {
 
@@ -20,17 +21,22 @@ describe('Sign up', () => {
         await LoginPage.clickSignUp();
 
         // 6. Nhập Email
-        await LoginPage.enterEmail('test123@gmail.com');
+        await LoginPage.enterEmail(SignUpData.success.email);
 
         // 7. Nhập Password
-        await LoginPage.enterPassword('123456');
+        await LoginPage.enterPassword(SignUpData.success.password);
 
         // 8. Nhập Confirm Password
-        await LoginPage.enterConfirmPassword('123456');
+        await LoginPage.enterConfirmPassword(
+            SignUpData.success.confirmPassword
+        );
 
         // 9. Click SIGN UP
         await LoginPage.clickSignUpSubmit();
 
+        // 10. Verify message
+        await LoginPage.expectMessageDisplayed(
+            SignUpData.success.message
+        );
     });
-
 });

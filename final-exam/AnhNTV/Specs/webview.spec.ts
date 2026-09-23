@@ -1,36 +1,36 @@
-import WebPage from '../Pages/web.page.js';
+import HomePage from '../pages/home.page.js';
+import WebPage from '../pages/web.page.js';
 
 describe('WebView', () => {
 
-    it('should search Selectors on WebView', async () => {
+    it('WebView successfully', async () => {
 
-        // 1. Click vào nút Web trên màn hình Home
-        await WebPage.clickWeb();
+        // 1. Chọn button Web
+        await HomePage.clickWeb();
 
-        // 2. Chuyển từ Native App sang WebView
+        // 2. Switch sang WebView trước khi kiểm tra màn hình web
         await WebPage.switchToWebView();
 
-        // 3. Kiểm tra màn hình WebView đã hiển thị
+        // 3. Verify màn hình Web hiển thị
         await WebPage.expectWebDisplayed();
 
-        // 4. Click vào ô tìm kiếm
+        // 4. Click Search
         await WebPage.clickSearch();
 
-        // 5. Nhập từ khóa "Selectors" vào ô tìm kiếm
+        // 5. Nhập "Selectors"
         await WebPage.enterSearch('Selectors');
 
-        // 6. Kiểm tra kết quả "Selectors" được hiển thị
+        // 6. Verify màn hình Selectors
         await WebPage.expectSelectorsDisplayed();
 
-        // 7. Chuyển từ WebView về Native App
+        // 7. Switch về Native
         await WebPage.switchToNative();
 
-        // 8. Quay lại màn hình Home
+        // 8. Back về Home
         await WebPage.backToHome();
 
-        // 9. Kiểm tra màn hình Home đã hiển thị
+        // 9. Verify màn hình Home
         await WebPage.expectHomeDisplayed();
-
     });
 
 });

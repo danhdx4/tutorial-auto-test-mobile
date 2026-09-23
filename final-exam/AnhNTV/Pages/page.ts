@@ -1,5 +1,5 @@
-export default class Page {
+export default class page {
     public waitForLoad() {
-        // Base page placeholder for shared page behavior.
+        // Class cha (những gì chung được thì để ở đây)
     }
 }

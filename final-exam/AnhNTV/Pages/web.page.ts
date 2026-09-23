@@ -17,56 +17,49 @@ class WebPage extends Page {
 
     // VERIFY MÀN WEB
 
-    // Search button trên màn Web theo accessibility id
+    // Search button trên màn Web theo selector DOM của webview
     get SearchBtn() {
-        return $('~Search (Ctrl+K)');
+        return $('.DocSearch-Button');
     }
 
     // Kiểm tra màn Web đã hiển thị
     async expectWebDisplayed() {
-        await expect($('[aria-label="Search (Ctrl+K)"]')).toBeDisplayed();
+        await expect(this.SearchBtn).toBeDisplayed();
     }
 
 
     // CHUYỂN SANG WEBVIEW
 
     async switchToWebView() {
-
-        // Lấy context hiện tại
-        let currentContext = await driver.getContext();
-        console.log('Context hiện tại: ', currentContext);
-
-        // Lấy danh sách các context
-        const listOfContexts = await driver.getContexts();
-        console.log('Danh sách context: ', listOfContexts);
-
-        // Chờ WebView xuất hiện rồi chuyển sang context thực tế của app
+        // Chờ webview xuất hiện
         await browser.waitUntil(
-            async () => (await driver.getContexts()).some((context) => context.startsWith('WEBVIEW')),
+            // Lấy danh sách contexts và kiếm tra xem có webview chưa
+            async () => (await browser.getContexts())
+                .some(context => typeof context === 'string' && context.startsWith('WEBVIEW')),
             {
                 timeout: 15000,
-                timeoutMsg: 'WebView context was not created after opening the Web page',
-            },
+                timeoutMsg: 'WebView không xuất hiện'
+            }
         );
 
-        const webViewContext = (await driver.getContexts()).find((context) => context.startsWith('WEBVIEW'));
-        if (!webViewContext) {
-            throw new Error('No WebView context is available');
+        // Tìm chính xác webview
+        const webView = (await browser.getContexts())
+            .find((context): context is string =>
+                typeof context === 'string' && context.startsWith('WEBVIEW')
+            );
+
+        if (!webView) {
+            throw new Error('Không tìm thấy WebView');
         }
 
-        await driver.switchContext(webViewContext);
-
-        // Kiểm tra context hiện tại
-        currentContext = await driver.getContext();
-        console.log('Context hiện tại: ', currentContext);
+        await browser.switchContext(webView);
     }
-
 
     // SEARCH - WEBVIEW
 
     // Button Search trên WebView
     get SearchButton() {
-        return $('[aria-label="Search (Ctrl+K)"]');
+        return $('.DocSearch-Button');
     }
 
     // Click Search
@@ -76,7 +69,7 @@ class WebPage extends Page {
 
     // Ô input Search trên WebView
     get SearchInput() {
-        return $('#docsearch-input');
+        return $('.DocSearch-Input');
     }
 
     // Nhập Selectors

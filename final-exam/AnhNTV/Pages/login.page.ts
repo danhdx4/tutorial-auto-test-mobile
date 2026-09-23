@@ -1,5 +1,7 @@
-// Page Object cho màn hình Home
-class HomePage {
+import Page from './page.js';
+
+// Page Object cho màn hình Login
+class LoginPage extends Page {
 
     // ==================== MENU ====================
 
@@ -18,30 +20,30 @@ class HomePage {
         return $('android=new UiSelector().text("Menu")');
     }
 
-    // Kiểm tra tiêu đề Menu có hiển thị
+    // Kiểm tra Menu hiển thị
     async expectMenuDisplayed() {
         await expect(this.MenuTitle).toBeDisplayed();
     }
 
 
-    // ==================== LOGIN / SIGN UP FORM ====================
+    // ==================== LOGIN ====================
 
     // Locator nút Login trong Menu
     get LoginBtn() {
         return $('android=new UiSelector().description("side-menu-item-login")');
     }
 
-    // Click vào nút Login trong Menu
+    // Click Login
     async clickLogin() {
         await this.LoginBtn.click();
     }
 
-    // Locator tiêu đề màn hình Login / Sign up
+    // Locator tiêu đề Login
     get LoginTitle() {
-        return $('android=new UiSelector().text("Login / Sign up Form")');
+        return $('android=new UiSelector().text("Login")');
     }
 
-    // Kiểm tra màn hình Login / Sign up có hiển thị
+    // Kiểm tra màn hình Login hiển thị
     async expectLoginDisplayed() {
         await expect(this.LoginTitle).toBeDisplayed();
     }
@@ -58,6 +60,9 @@ class HomePage {
     async clickSignUp() {
         await this.SignUpBtn.click();
     }
+
+
+    // ==================== LOGIN FORM ====================
 
     // Locator ô nhập Email
     get EmailInput() {
@@ -89,19 +94,6 @@ class HomePage {
         await this.ConfirmPasswordInput.setValue(confirmPassword);
     }
 
-    // Locator nút SIGN UP trên form
-    get SignUpSubmitBtn() {
-        return $('android=new UiSelector().text("SIGN UP")');
-    }
-
-    // Click nút SIGN UP
-    async clickSignUpSubmit() {
-        await this.SignUpSubmitBtn.click();
-    }
-
-
-    // ==================== LOGIN ====================
-
     // Locator tab Login
     get LoginTabBtn() {
         return $('android=new UiSelector().text("Login")');
@@ -121,7 +113,26 @@ class HomePage {
     async clickLoginSubmit() {
         await this.LoginSubmitBtn.click();
     }
+
+    // Locator nút SIGN UP trên form
+    get SignUpSubmitBtn() {
+        return $('android=new UiSelector().text("SIGN UP")');
+    }
+
+    // Click nút SIGN UP
+    async clickSignUpSubmit() {
+        await this.SignUpSubmitBtn.click();
+    }
+
+
+    // ==================== MESSAGE ====================
+
+    // Kiểm tra message
+    async expectMessageDisplayed(message: string) {
+        await expect(
+            $('android=new UiSelector().text("' + message + '")')
+        ).toBeDisplayed();
+    }
 }
 
-// Export HomePage để sử dụng trong file test
-export default new HomePage();
+export default new LoginPage();
